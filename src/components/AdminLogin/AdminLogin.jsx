@@ -38,6 +38,7 @@ const AdminLogin = () => {
 
       if (response.data.success) {
         setMessage("Login successful!");
+        alert("Login successful!");
         setIsError(false);
 
         //  window.location.href = "/dashboard";
