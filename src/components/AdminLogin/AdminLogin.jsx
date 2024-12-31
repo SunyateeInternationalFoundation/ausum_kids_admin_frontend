@@ -16,10 +16,10 @@ const AdminLogin = () => {
       [name]: value,
     }));
   };
-  console.log(import.meta.env.VITE_WEBSITE);
+  // console.log(import.meta.env.VITE_WEBSITE);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.email.length == 0) {
+    if (formData.email.trim().length == 0) {
       alert("Invalid Form, Email Address can not be empty");
       return;
     }
