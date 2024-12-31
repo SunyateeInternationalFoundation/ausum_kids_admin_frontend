@@ -16,7 +16,6 @@ const AdminLogin = () => {
       [name]: value,
     }));
   };
-  console.log(import.meta.env.VITE_WEBSITE);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.email.length == 0) {
@@ -31,6 +30,7 @@ const AdminLogin = () => {
       return;
     }
     try {
+      console.log(formData)
       const response = await axios.post(
         `${import.meta.env.VITE_WEBSITE}/login`,
         formData
@@ -46,7 +46,7 @@ const AdminLogin = () => {
         setIsError(true);
       }
     } catch (err) {
-      setMessage(err.response?.data?.message || "An error occurred.");
+      setMessage(err.response?.data?.message );
       setIsError(true);
     }
   };
