@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setAdminLogin } from "../../store/AdminSlice";
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -8,7 +11,8 @@ const AdminLogin = () => {
 
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -23,12 +27,12 @@ const AdminLogin = () => {
       return;
     }
 
-    if (formData.password.length < 8) {
-      alert(
-        "Invalid Form, Password must contain greater than or equal to 8 characters."
-      );
-      return;
-    }
+    // if (formData.password.length < 8) {
+    //   alert(
+    //     "Invalid Form, Password must contain greater than or equal to 8 characters."
+    //   );
+    //   return;
+    // }
     try {
       console.log(formData);
       const response = await axios.post(
@@ -37,11 +41,19 @@ const AdminLogin = () => {
       );
 
       if (response.data.success) {
+        console.log("response.data.admin", response.data.admin);
+        const data = response.data.admin;
+        const payload = {
+          adminId: data._id,
+          email: data.email,
+          isSuperAdmin: data.isSuperAdmin,
+          isLogin: true,
+        };
         setMessage("Login successful!");
         alert("Login successful!");
         setIsError(false);
-
-        //  window.location.href = "/dashboard";
+        dispatch(setAdminLogin(payload));
+        navigate("/manage-parents");
       } else {
         setMessage(response.data.message || "Login failed.");
         setIsError(true);
