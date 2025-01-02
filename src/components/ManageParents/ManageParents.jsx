@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 const ManageParents = () => {
+  const navigate = useNavigate();
   const [parents, setParents] = useState([
     {
       id: 1,
@@ -35,18 +37,18 @@ const ManageParents = () => {
     fetchParents();
   }, []);
 
-  const handleVerify = async (id) => {
-    try {
-      await axios.put(`${import.meta.env.VITE_WEBSITE}/parents/${id}`);
-      setParents((prev) =>
-        prev.map((parent) =>
-          parent.id === id ? { ...parent, verified: !parent.verified } : parent
-        )
-      );
-    } catch (error) {
-      console.error("Error updating verification:", error);
-    }
-  };
+  // const handleVerify = async (id) => {
+  //   try {
+  //     await axios.put(`${import.meta.env.VITE_WEBSITE}/parents/${id}`);
+  //     setParents((prev) =>
+  //       prev.map((parent) =>
+  //         parent.id === id ? { ...parent, verified: !parent.verified } : parent
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error("Error updating verification:", error);
+  //   }
+  // };
 
   const handleDelete = async (id) => {
     try {
@@ -56,7 +58,7 @@ const ManageParents = () => {
       console.error("Error deleting parent:", error);
     }
   };
-
+  console.log("parents", parents);
   return (
     <div className="p-6 bg-gray-100 min-h-screen mt-10">
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
@@ -78,9 +80,9 @@ const ManageParents = () => {
               <th className="px-6 py-3 text-sm font-semibold tracking-wider">
                 Address
               </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
+              {/* <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
                 Verification
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
                 Actions
               </th>
@@ -90,7 +92,11 @@ const ManageParents = () => {
             {parents.map((parent) => (
               <tr
                 key={parent.id}
-                className="bg-white border-b hover:bg-gray-50 transition duration-150"
+                className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
+                onClick={() => {
+                  console.log("parent.id", parent.id);
+                  navigate(parent.id);
+                }}
               >
                 <td className="px-6 py-4">
                   <img
@@ -105,14 +111,14 @@ const ManageParents = () => {
                 <td className="px-6 py-4 text-gray-600">{parent.phone}</td>
                 <td className="px-6 py-4 text-gray-600">{parent.email}</td>
                 <td className="px-6 py-4 text-gray-600">{parent.address}</td>
-                <td className="px-6 py-4 text-center">
+                {/* <td className="px-6 py-4 text-center">
                   <input
                     type="checkbox"
                     checked={parent.verified}
                     onChange={() => handleVerify(parent.id)}
                     className="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
-                </td>
+                </td> */}
                 <td className="px-6 py-4 text-center">
                   <button
                     onClick={() => handleDelete(parent.id)}
