@@ -12,12 +12,12 @@ const Sidebar = () => {
   const [isClose, setIsClose] = useState(false);
 
   const menuItems = [
-    { name: "Manage Parents", path: "manage-parents", icon: <FaUsers /> },
-    { name: "Manage Child Profiles", path: "manage-child", icon: <FaChild /> },
-    { name: "Manage Services", path: "manage-services", icon: <FaTools /> },
+    { name: "Manage Parents", path: "/manage-parents", icon: <FaUsers /> },
+    { name: "Manage Child Profiles", path: "/manage-child", icon: <FaChild /> },
+    { name: "Manage Services", path: "/manage-services", icon: <FaTools /> },
     {
       name: "Analytics & Reports",
-      path: "analytics-reports",
+      path: "/analytics-reports",
       icon: <FaChartBar />,
     },
   ];
