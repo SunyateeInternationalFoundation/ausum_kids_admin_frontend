@@ -4,26 +4,16 @@ import { useParams } from "react-router-dom";
 
 const ParentsView = () => {
   const { id } = useParams();
-  const [parent, setParent] = useState({
-    id: 1,
-    name: "Kayathri",
-    phone: "1234567890",
-    email: "kayu@gmail.com",
-    address: "120, West Street",
-    city: "Tamil Nadu",
-    pincode: "600001",
-    verified: false,
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", // Placeholder image
-  });
+  const [parent, setParent] = useState({});
 
   useEffect(() => {
     const fetchParentDetails = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/parents/${id}`
+          `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
         );
-        setParent(response.data);
+        console.log("response", response);
+        setParent(response.data.data);
       } catch (error) {
         console.error("Error fetching parent details:", error);
       }
@@ -34,7 +24,7 @@ const ParentsView = () => {
   async function approveParent(id) {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_WEBSITE}/parents/${id}/verify`
+        `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
       );
       setParent((prev) => ({ ...prev, verified: true }));
       alert("Parent verified successfully!");
@@ -47,7 +37,7 @@ const ParentsView = () => {
 
   return (
     <div className="p-8 min-h-screen bg-white flex justify-center items-center overflow-y-auto">
-      <div className="max-w-6xl w-full max-w-full bg-white rounded-lg overflow-y-auto flex flex-col md:flex-row relative">
+      <div className="w-full max-w-full bg-white rounded-lg overflow-y-auto flex flex-col md:flex-row relative">
         <div className="w-full md:w-1/3 p-6 bg-gray-100 flex items-center justify-center">
           <img
             src="https://plus.unsplash.com/premium_photo-1679872282827-ecdb5200142f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
