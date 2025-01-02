@@ -95,7 +95,7 @@ const ManageParents = () => {
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
                 onClick={() => {
                   console.log("parent.id", parent.id);
-                  navigate(parent.id);
+                  navigate(`/manage-parents/${parent.id}`);
                 }}
               >
                 <td className="px-6 py-4">
@@ -119,7 +119,10 @@ const ManageParents = () => {
                     className="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                 </td> */}
-                <td className="px-6 py-4 text-center">
+                <td
+                  className="px-6 py-4 text-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <button
                     onClick={() => handleDelete(parent.id)}
                     className="text-red-500 hover:text-red-700 transition duration-150"

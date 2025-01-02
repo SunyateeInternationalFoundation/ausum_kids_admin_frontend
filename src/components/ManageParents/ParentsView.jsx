@@ -47,7 +47,7 @@ const ParentsView = () => {
 
   return (
     <div className="p-8 min-h-screen bg-white flex justify-center items-center overflow-y-auto">
-      <div className="max-w-6xl w-full max-w-full bg-white shadow-2xl rounded-lg overflow-y-auto flex flex-col md:flex-row relative">
+      <div className="max-w-6xl w-full max-w-full bg-white rounded-lg overflow-y-auto flex flex-col md:flex-row relative">
         <div className="w-full md:w-1/3 p-6 bg-gray-100 flex items-center justify-center">
           <img
             src="https://plus.unsplash.com/premium_photo-1679872282827-ecdb5200142f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

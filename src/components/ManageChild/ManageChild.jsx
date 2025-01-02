@@ -33,19 +33,6 @@ const ManageChild = () => {
   //   fetchchildrens();
   // }, []);
 
-  // const handleVerify = async (id) => {
-  //   try {
-  //     await axios.put(`${import.meta.env.VITE_WEBSITE}/childrens/${id}`);
-  //     setChildrens((prev) =>
-  //       prev.map((child) =>
-  //         child.id === id ? { ...child, verified: !child.verified } : child
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error("Error updating verification:", error);
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${import.meta.env.VITE_WEBSITE}/childrens/${id}`);
@@ -88,9 +75,9 @@ const ManageChild = () => {
               <tr
                 key={child.id}
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
-                onClick={() => {
+                onClick={(e) => {
                   console.log("child.id", child.id);
-                  navigate(child.id);
+                  navigate(`/manage-child/${child.id}`);
                 }}
               >
                 <td className="px-6 py-4">
@@ -114,9 +101,16 @@ const ManageChild = () => {
                     className="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                 </td> */}
-                <td className="px-6 py-4 text-center">
+                <td
+                  className="px-6 py-4 text-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <button
-                    onClick={() => handleDelete(child.id)}
+                    onClick={(e) => {
+                      handleDelete(child.id);
+                    }}
                     className="text-red-500 hover:text-red-700 transition duration-150"
                   >
                     <RiDeleteBin6Line size={24} />
