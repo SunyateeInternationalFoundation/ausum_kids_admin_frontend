@@ -4,32 +4,15 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 const ManageParents = () => {
   const navigate = useNavigate();
-  const [parents, setParents] = useState([
-    {
-      id: 1,
-      name: "Kayathri",
-      phone: "1234567890",
-      email: "kayu@gmail.com",
-      address: "120,west street, Tamil Nadu",
-      verified: false,
-    },
-    {
-      id: 2,
-      name: "UdhayaSurya",
-      phone: "9876543210",
-      email: "surya@gmail.com",
-      address: "456, east street, Tamil Nadu",
-      verified: true,
-    },
-  ]);
+  const [parents, setParents] = useState([]);
 
   useEffect(() => {
     const fetchParents = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/parents`
+          `${import.meta.env.VITE_WEBSITE}/manage-parents`
         );
-        setParents(response.data);
+        setParents(response.data.data);
       } catch (error) {
         console.error("Error fetching parents:", error);
       }
@@ -60,30 +43,30 @@ const ManageParents = () => {
   };
   console.log("parents", parents);
   return (
-    <div className="p-6 bg-gray-100 min-h-screen mt-10">
+    <div className="p-2 bg-gray-100 min-h-screen mt-2">
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="table-auto w-full text-left border-collapse">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider">
                 Profile
               </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider">
                 Phone Number
               </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider">
                 Address
               </th>
               {/* <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
                 Verification
               </th> */}
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
+              <th className="px-4 py-2 text-sm font-semibold tracking-wider text-center">
                 Actions
               </th>
             </tr>
@@ -94,23 +77,23 @@ const ManageParents = () => {
                 key={parent.id}
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
                 onClick={() => {
-                  console.log("parent.id", parent.id);
-                  navigate(`/manage-parents/${parent.id}`);
+                  console.log("parent.id", parent._id);
+                  navigate(`/manage-parents/${parent._id}`);
                 }}
               >
-                <td className="px-6 py-4">
+                <td className="px-4 py-2">
                   <img
                     src={`https://ui-avatars.com/api/?name=${parent.name}`}
                     alt={`${parent.name} profile`}
                     className="h-12 w-12 rounded-full border-2 border-gray-300 shadow-sm"
                   />
                 </td>
-                <td className="px-6 py-4 text-gray-700 font-medium">
+                <td className="px-4 py-2 text-gray-700 font-medium">
                   {parent.name}
                 </td>
-                <td className="px-6 py-4 text-gray-600">{parent.phone}</td>
-                <td className="px-6 py-4 text-gray-600">{parent.email}</td>
-                <td className="px-6 py-4 text-gray-600">{parent.address}</td>
+                <td className="px-4 py-2 text-gray-600">{parent.phone}</td>
+                <td className="px-4 py-2 text-gray-600">{parent.email}</td>
+                <td className="px-4 py-2 text-gray-600">{parent.address}</td>
                 {/* <td className="px-6 py-4 text-center">
                   <input
                     type="checkbox"
@@ -120,7 +103,7 @@ const ManageParents = () => {
                   />
                 </td> */}
                 <td
-                  className="px-6 py-4 text-center"
+                  className="px-4 py-2 text-center"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
