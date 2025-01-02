@@ -18,10 +18,48 @@ const ChildView = () => {
     selectedDate: "2021-12-12",
     selectedTime: "10:00 AM",
     notes: "This is a test note",
+    totalSessions: 5,
     image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", // Placeholder image
+      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+    history: [
+      {
+        time: "10:00 AM",
+        date: "2021-12-12",
+        serviceProvider: "Dr.Smith",
+        sessionNo: 1,
+        status: "Completed",
+      },
+      {
+        time: "2:00 PM",
+        date: "2021-12-15",
+        serviceProvider: "Dr.John",
+        sessionNo: 2,
+        status: "Completed",
+      },
+      {
+        time: "10:00 AM",
+        date: "2021-12-12",
+        serviceProvider: "Dr.Smith",
+        sessionNo: 3,
+        status: "Pending",
+      },
+      {
+        time: "2:00 PM",
+        date: "2021-12-15",
+        serviceProvider: "Dr.John",
+        sessionNo: 4,
+        status: "Pending",
+      },
+      {
+        time: "10:00 AM",
+        date: "2021-12-12",
+        serviceProvider: "Dr.Smith",
+        sessionNo: 5,
+        status: "Pending",
+      },
+    ],
   });
-  console.log("id", id);
+
   useEffect(() => {
     const fetchChildDetails = async () => {
       try {
@@ -38,11 +76,11 @@ const ChildView = () => {
 
   async function approveChild(id) {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_WEBSITE}/childrens/${id}/verify`
       );
       setChild((prev) => ({ ...prev, verified: true }));
-      alert("child verified successfully!");
+      alert("Child verified successfully!");
     } catch (error) {
       console.error("Error verifying child:", error);
     }
@@ -51,21 +89,20 @@ const ChildView = () => {
   if (!child) return <div>Loading...</div>;
 
   return (
-    <div className="p-8 min-h-screen bg-white flex justify-center items-center overflow-y-auto">
-      <div className="max-w-6xl w-full max-w-full bg-white rounded-lg overflow-y-auto flex flex-col md:flex-row relative">
-        <div className="w-full md:w-1/3 p-6 bg-gray-100 flex items-center justify-center">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1679872282827-ecdb5200142f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt={`${child.name}`}
-            className="rounded-lg shadow-md object-cover w-full h-full"
-          />
-        </div>
-
-        <div className="w-full md:w-2/3 p-8 relative">
-          <h1 className="text-4xl font-bold text-gray-800 mb-6">
-            {child.name}
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-20">
+    <div className="p-8 w-full h-full bg-white flex justify-center items-center overflow-y-auto">
+      <div className="w-full bg-white rounded-lg overflow-y-auto md:flex-row">
+        <div className="relative w-full p-8 flex flex-row gap-6">
+          <div className="py-6 w-1/4 h-full bg-gray-100 flex items-center rounded-lg justify-center">
+            <img
+              src={child.image}
+              alt={`${child.name}`}
+              className="rounded-lg shadow-md object-cover w-64 h-64"
+            />
+          </div>
+          <div className="w-3/4 grid grid-cols-1 md:grid-cols-2 gap-6 ml-10">
+            <p className="text-gray-600">
+              <strong>Child Name:</strong> {child.name}
+            </p>
             <p className="text-gray-600">
               <strong>Parent's Name:</strong> {child.parentName}
             </p>
@@ -100,10 +137,56 @@ const ChildView = () => {
               <strong>Notes:</strong> {child.notes}
             </p>
           </div>
-
+        </div>
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            Session Details -{" "}
+            <span className="text-gray-500 font-bold">
+              {child.selectedService}
+            </span>
+          </h2>
+          <table className="w-full border-collapse border border-gray-300 text-left">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Session No</th>
+                <th className="border border-gray-300 px-4 py-2">Date</th>
+                <th className="border border-gray-300 px-4 py-2">Time</th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Service Provider
+                </th>
+                <th className="border border-gray-300 px-4 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {child.history.map((service, index) => (
+                <tr key={index}>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {service.sessionNo}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {service.date}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {service.time}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {service.serviceProvider}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {service.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="absolute bottom-6 right-6 flex space-x-4">
+          <button className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300">
+            Go to Parent's Profile
+          </button>
           {!child.verified && (
             <button
-              className="absolute bottom-6 right-6 bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
+              className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
               onClick={() => approveChild(id)}
             >
               Verify Child
