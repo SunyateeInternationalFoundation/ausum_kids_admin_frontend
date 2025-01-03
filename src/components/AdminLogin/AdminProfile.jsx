@@ -12,7 +12,7 @@ const AdminProfile = () => {
     lastName: "",
   });
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
-
+  const [allAdmins, setAllAdmins] = useState([]);
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -21,8 +21,21 @@ const AdminProfile = () => {
       firstName: adminDetails?.firstName || "",
       lastName: adminDetails?.lastName || "",
     });
+    if (adminDetails.isSuperAdmin) {
+      fetchAllAdmins();
+    }
   }, [adminDetails]);
   console.log(formData);
+  const fetchAllAdmins = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_WEBSITE}/admins`
+      );
+      setAllAdmins(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching all admins:", error);
+    }
+  };
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -137,6 +150,38 @@ const AdminProfile = () => {
           )}
         </div>
       </div>
+      <hr className="mt-8" />
+      {adminDetails.isSuperAdmin && (
+        <div className="mt-10 overflow-y-auto">
+          <h3 className="text-xl font-bold mb-4">All Admins</h3>
+          <div className="grid grid-cols-2 m-4 gap-4">
+            {allAdmins
+              .filter((a) => a._id !== adminDetails.adminId)
+              .map((admin) => (
+                <div
+                  key={admin.id}
+                  className="p-4 border rounded-md shadow-sm bg-gray-50"
+                >
+                  <p>
+                    <strong>Name:</strong>{" "}
+                    {admin.firstName || admin.lastName
+                      ? `${admin.firstName || ""} ${
+                          admin.lastName || ""
+                        }`.trim()
+                      : "Yet to update"}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {admin.email}
+                  </p>
+                  <p>
+                    <strong>Role:</strong>{" "}
+                    {admin.isSuperAdmin ? "Super Admin" : "Admin"}
+                  </p>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

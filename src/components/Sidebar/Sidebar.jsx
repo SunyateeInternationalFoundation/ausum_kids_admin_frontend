@@ -4,6 +4,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaChild,
+  FaHandsHelping,
   FaTools,
   FaUser,
   FaUsers,
@@ -29,6 +30,11 @@ const Sidebar = () => {
       name: "Analytics & Reports",
       path: "/analytics-reports",
       icon: <FaChartBar />,
+    },
+    {
+      name: "Manage Providers",
+      path: "/manage-providers",
+      icon: <FaHandsHelping />,
     },
   ];
 

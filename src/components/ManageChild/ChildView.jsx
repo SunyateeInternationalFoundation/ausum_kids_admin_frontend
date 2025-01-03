@@ -34,7 +34,7 @@ const ChildView = () => {
   if (!child) return <div>Loading...</div>;
 
   return (
-    <div className="p-8 w-full h-full bg-white flex justify-center items-center overflow-y-auto">
+    <div className="p-8 w-full h-full bg-white flex overflow-y-auto">
       <div className="w-full bg-white rounded-lg overflow-y-auto md:flex-row">
         <div className="relative w-full p-8 flex flex-row gap-6">
           <div className="py-6 w-1/4 h-full bg-gray-100 flex items-center rounded-lg justify-center">
@@ -49,22 +49,22 @@ const ChildView = () => {
               <strong>Child Name:</strong> {child.name}
             </p>
             <p className="text-gray-600">
-              <strong>Parent's Name:</strong> {child.parentName}
+              <strong>Parent's Name:</strong> {child.parent.name}
             </p>
             <p className="text-gray-600">
-              <strong>Address:</strong> {child.address}
+              <strong>Address:</strong> {child.parent.address}
             </p>
             <p className="text-gray-600">
-              <strong>Parent's Email:</strong> {child.parentEmail}
+              <strong>Parent's Email:</strong> {child.parent.email}
             </p>
             <p className="text-gray-600">
-              <strong>City:</strong> {child.city}
+              <strong>City:</strong> {child.parent.city}
             </p>
             <p className="text-gray-600">
-              <strong>Parent's Phone:</strong> {child.parentPhone}
+              <strong>Parent's Phone:</strong> {child.parent.phone}
             </p>
             <p className="text-gray-600">
-              <strong>Pincode:</strong> {child.pincode}
+              <strong>Pincode:</strong> {child.parent.pincode}
             </p>
             <p className="text-gray-600">
               <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
@@ -129,7 +129,7 @@ const ChildView = () => {
           <button
             className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
             onClick={() => {
-              navigate("/manage-parents/" + child.parent);
+              navigate("/manage-parents/" + child.parent._id);
             }}
           >
             Go to Parent's Profile

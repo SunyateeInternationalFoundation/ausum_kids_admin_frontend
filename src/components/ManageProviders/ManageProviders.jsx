@@ -2,26 +2,51 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
-const ManageChild = () => {
+const initialProvider = [
+  {
+    _id: 1,
+    image: "",
+    name: "kayu",
+    phone: "1233455677",
+    email: "kayu@gmail.com",
+    serviceName: "autism therapy",
+  },
+  {
+    _id: 2,
+    image: "",
+    name: "kayu",
+    phone: "1233455677",
+    email: "kayu@gmail.com",
+    serviceName: "autism therapy",
+  },
+  {
+    _id: 3,
+    image: "",
+    name: "kayu",
+    phone: "1233455677",
+    email: "kayu@gmail.com",
+    serviceName: "autism therapy",
+  },
+];
+const ManageProviders = () => {
   const navigate = useNavigate();
-  const [childrens, setChildrens] = useState([]);
+  const [providers, setProviders] = useState(initialProvider);
 
   useEffect(() => {
-    const fetchChildrens = async () => {
+    const fetchProviders = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/manage-child`
+          `${import.meta.env.VITE_WEBSITE}/manage-providers`
         );
         console.log("response", response);
-        setChildrens(response.data.data);
+        setProviders(response.data.data);
       } catch (error) {
-        console.error("Error fetching children:", error);
+        console.error("Error fetching Providers:", error);
       }
     };
-    fetchChildrens();
+    fetchProviders();
   }, []);
-  console.log("childrens", childrens);
+
   const handleDelete = async (id, name) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete ${name}?`
@@ -29,10 +54,12 @@ const ManageChild = () => {
     if (!isConfirmed) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
-      setChildrens((prev) => prev.filter((child) => child._id !== id));
+      await axios.delete(
+        `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`
+      );
+      setProviders((prev) => prev.filter((provider) => provider._id !== id));
     } catch (error) {
-      console.error("Error deleting child:", error);
+      console.error("Error deleting Provider:", error);
     }
   };
 
@@ -49,10 +76,13 @@ const ManageChild = () => {
                 Name
               </th>
               <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Parent's Name
+                Phone Number
               </th>
               <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Parent's Phone Number
+                Email
+              </th>
+              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
+                Service Name
               </th>
               <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
                 Actions
@@ -60,39 +90,40 @@ const ManageChild = () => {
             </tr>
           </thead>
           <tbody>
-            {childrens.length === 0 && (
+            {providers.length === 0 && (
               <tr>
                 <td colSpan="5" className="text-center py-4">
-                  No children found!
+                  No Providers found!
                 </td>
               </tr>
             )}
-            {childrens.map((child) => (
+            {providers.map((provider) => (
               <tr
-                key={child._id}
+                key={provider._id}
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
-                onClick={() => navigate(`/manage-child/${child._id}`)}
+                onClick={() => navigate(`/manage-providers/${provider._id}`)}
               >
                 <td className="px-6 py-4">
                   <img
-                    src={`https://ui-avatars.com/api/?name=${child.name}`}
-                    alt={`${child.name} profile`}
+                    src={`https://ui-avatars.com/api/?name=${provider.name}`}
+                    alt={`${provider.name} profile`}
                     className="h-12 w-12 rounded-full border-2 border-gray-300 shadow-sm"
                   />
                 </td>
                 <td className="px-6 py-4 text-gray-700 font-medium">
-                  {child.name}
+                  {provider.name}
                 </td>
-                <td className="px-6 py-4 text-gray-600">{child.parent.name}</td>
+                <td className="px-6 py-4 text-gray-600">{provider.phone}</td>
+                <td className="px-6 py-4 text-gray-600">{provider.email}</td>
                 <td className="px-6 py-4 text-gray-600">
-                  {child.parent.phone}
+                  {provider.serviceName}
                 </td>
                 <td
                   className="px-6 py-4 text-center"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    onClick={() => handleDelete(child._id, child.name)}
+                    onClick={() => handleDelete(provider._id, provider.name)}
                     className="text-red-500 hover:text-red-700 transition duration-150"
                   >
                     <RiDeleteBin6Line size={24} />
@@ -107,4 +138,4 @@ const ManageChild = () => {
   );
 };
 
-export default ManageChild;
+export default ManageProviders;

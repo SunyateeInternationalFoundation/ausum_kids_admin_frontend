@@ -151,57 +151,58 @@
 // };
 
 // export default ManageServices;
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-const initialServices = [
-  {
-    _id: 1,
-    name: "Autism Therapy",
-    about: "Specialized therapy for children with autism.",
-    price: 2000,
-    sessions: 10,
-  },
-  {
-    _id: 2,
-    name: "Speech Therapy",
-    about: "Improves speech and communication skills.",
-    price: 1500,
-    sessions: 8,
-  },
-  {
-    _id: 3,
-    name: "Occupational Therapy",
-    about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    price: 1800,
-    sessions: 12,
-  },
-  {
-    _id: 4,
-    name: "Behavior Therapy",
-    about: "Addresses challenging behaviors.",
-    price: 2200,
-    sessions: 15,
-  },
-  {
-    _id: 5,
-    name: "Special Education",
-    about: "Personalized education for special needs.",
-    price: 2500,
-    sessions: 20,
-  },
-  {
-    id: 6,
-    name: "Psychological Counseling",
-    about: "Emotional and mental health support.",
-    price: 2000,
-    sessions: 10,
-  },
-];
+// const initialServices = [
+//   {
+//     _id: 1,
+//     name: "Autism Therapy",
+//     about: "Specialized therapy for children with autism.",
+//     price: 2000,
+//     sessions: 10,
+//   },
+//   {
+//     _id: 2,
+//     name: "Speech Therapy",
+//     about: "Improves speech and communication skills.",
+//     price: 1500,
+//     sessions: 8,
+//   },
+//   {
+//     _id: 3,
+//     name: "Occupational Therapy",
+//     about:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+//     price: 1800,
+//     sessions: 12,
+//   },
+//   {
+//     _id: 4,
+//     name: "Behavior Therapy",
+//     about: "Addresses challenging behaviors.",
+//     price: 2200,
+//     sessions: 15,
+//   },
+//   {
+//     _id: 5,
+//     name: "Special Education",
+//     about: "Personalized education for special needs.",
+//     price: 2500,
+//     sessions: 20,
+//   },
+//   {
+//     id: 6,
+//     name: "Psychological Counseling",
+//     about: "Emotional and mental health support.",
+//     price: 2000,
+//     sessions: 10,
+//   },
+// ];
 
 const ManageServices = () => {
-  const [services, setServices] = useState(initialServices);
+  const [services, setServices] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState({
     id: null,
@@ -218,7 +219,7 @@ const ManageServices = () => {
     );
   };
 
-  const openModal = (service = null) => {
+  const openModal = (service) => {
     setModalOpen(true);
     setCurrentService(service || { _id: null, name: "", about: "", price: "" });
   };
@@ -227,29 +228,56 @@ const ManageServices = () => {
     setModalOpen(false);
     setCurrentService({ id: null, name: "", about: "", price: "" });
   };
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_WEBSITE}/manage-services`
+      );
+      setServices(response.data.data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
 
-  const handleSave = () => {
-    if (currentService.id) {
-      // Edit service
+  useEffect(() => {
+    fetchServices();
+  });
+  const handleSave = async () => {
+    if (currentService._id) {
+      console.log("currentService", currentService);
+      await axios.put(
+        `${import.meta.env.VITE_WEBSITE}/manage-services/${currentService._id}`,
+        currentService
+      );
       setServices((prev) =>
         prev.map((service) =>
           service._id === currentService.id ? currentService : service
         )
       );
     } else {
-      // Add new service
+      const response = await axios.post(
+        `${import.meta.env.VITE_WEBSITE}/manage-services`,
+        currentService
+      );
       const newService = {
         ...currentService,
-        _id: services.length + 1,
+        id: response.data.data._id,
       };
       setServices((prev) => [...prev, newService]);
     }
     closeModal();
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this service?")) {
-      setServices((prev) => prev.filter((service) => service._id !== id));
+  const handleDelete = async (id) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this service?")) {
+        await axios.delete(
+          `${import.meta.env.VITE_WEBSITE}/manage-services/${id}`
+        );
+        setServices((prev) => prev.filter((service) => service._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting service:", error);
     }
   };
 
@@ -266,7 +294,6 @@ const ManageServices = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto">
         {services.map((service) => {
           const isExpanded = expandedIds.includes(service._id);
-          console.log("service", service);
           return (
             <div
               key={service._id}

@@ -12,7 +12,7 @@ const AddAdminModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_WEBSITE}/admin/add`,
+        `${import.meta.env.VITE_WEBSITE}/add-admin`,
         formData
       );
       alert(response.data.message || "Admin added successfully!");

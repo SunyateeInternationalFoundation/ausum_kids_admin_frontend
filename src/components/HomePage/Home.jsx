@@ -5,6 +5,8 @@ import ChildView from "../ManageChild/ChildView";
 import ManageChild from "../ManageChild/ManageChild";
 import ManageParents from "../ManageParents/ManageParents";
 import ParentsView from "../ManageParents/ParentsView";
+import ManageProviders from "../ManageProviders/ManageProviders";
+import ProvidersView from "../ManageProviders/ProvidersView";
 import ManageServices from "../ManageServices/ManageServices";
 import Sidebar from "../Sidebar/Sidebar";
 
@@ -23,6 +25,8 @@ const Home = () => {
             <Route path="/manage-child" element={<ManageChild />} />
             <Route path="/manage-child/:id" element={<ChildView />} />
             <Route path="/manage-services" element={<ManageServices />} />
+            <Route path="/manage-providers" element={<ManageProviders />} />
+            <Route path="/manage-providers/:id" element={<ProvidersView />} />
             <Route path="/analytics-reports" element={<AnalyticsReports />} />
           </Routes>
           <Outlet />
