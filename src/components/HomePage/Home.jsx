@@ -1,4 +1,5 @@
 import { Outlet, Route, Routes } from "react-router-dom";
+import AdminProfile from "../AdminLogin/AdminProfile";
 import AnalyticsReports from "../AnalyticsReports/AnalyticsReports";
 import ChildView from "../ManageChild/ChildView";
 import ManageChild from "../ManageChild/ManageChild";
@@ -10,12 +11,13 @@ import Sidebar from "../Sidebar/Sidebar";
 const Home = () => {
   return (
     <div>
-      <div className="flex" style={{ height: "92vh" }}>
+      <div className="flex">
         <div>
           <Sidebar />
         </div>
-        <div style={{ width: "100%", height: "92vh" }} className="bg-gray-100">
+        <div style={{ width: "100%" }} className="bg-gray-100">
           <Routes>
+            <Route path="/admin-profile" element={<AdminProfile />} />
             <Route path="/manage-parents" element={<ManageParents />} />
             <Route path="/manage-parents/:id" element={<ParentsView />} />
             <Route path="/manage-child" element={<ManageChild />} />

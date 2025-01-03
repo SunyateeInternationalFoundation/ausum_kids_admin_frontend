@@ -271,7 +271,7 @@ const ManageServices = () => {
             <div
               key={service._id}
               className={`border rounded-lg p-4 shadow-md bg-white flex flex-col justify-between transition-all duration-300 
-                ${isExpanded ? "h-auto" : "h-[550px]"}
+                ${isExpanded ? "h-auto" : "h-[550px]"} overflow-y-auto
               `}
             >
               <div>
@@ -337,12 +337,12 @@ const ManageServices = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-xl">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          <div className="bg-white rounded-lg p-6 mx-4 w-96 shadow-xl">
+            <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
               {currentService.id ? "Edit Service" : "Add Service"}
             </h2>
             <div className="space-y-4">
-              <div>
+              <div className="w-full">
                 <label className="block text-sm text-gray-700">
                   Service Name
                 </label>

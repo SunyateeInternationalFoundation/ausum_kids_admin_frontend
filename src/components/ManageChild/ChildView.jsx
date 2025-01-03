@@ -1,84 +1,29 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChildView = () => {
   const { id } = useParams();
-  const [child, setChild] = useState({
-    id: 1,
-    name: "Kayathri",
-    parentName: "Alagarsamy",
-    parentPhone: "1234567890",
-    parentEmail: "kayu@gmial.com",
-    address: "120, West Street",
-    city: "Tamil Nadu",
-    pincode: "600001",
-    verified: false,
-    selectedService: "Speech Therapy",
-    selectedDate: "2021-12-12",
-    selectedTime: "10:00 AM",
-    notes: "This is a test note",
-    totalSessions: 5,
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
-    history: [
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 1,
-        status: "Completed",
-      },
-      {
-        time: "2:00 PM",
-        date: "2021-12-15",
-        serviceProvider: "Dr.John",
-        sessionNo: 2,
-        status: "Completed",
-      },
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 3,
-        status: "Pending",
-      },
-      {
-        time: "2:00 PM",
-        date: "2021-12-15",
-        serviceProvider: "Dr.John",
-        sessionNo: 4,
-        status: "Pending",
-      },
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 5,
-        status: "Pending",
-      },
-    ],
-  });
-
+  const [child, setChild] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchChildDetails = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/childrens/${id}`
+          `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`
         );
-        setChild(response.data);
+
+        setChild(response.data.data);
       } catch (error) {
         console.error("Error fetching child details:", error);
       }
     };
     fetchChildDetails();
   }, [id]);
-
+  console.log(child);
   async function approveChild(id) {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_WEBSITE}/childrens/${id}/verify`
-      );
+      await axios.post(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
       setChild((prev) => ({ ...prev, verified: true }));
       alert("Child verified successfully!");
     } catch (error) {
@@ -181,7 +126,12 @@ const ChildView = () => {
           </table>
         </div>
         <div className="absolute bottom-6 right-6 flex space-x-4">
-          <button className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300">
+          <button
+            className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
+            onClick={() => {
+              navigate("/manage-parents/" + child.parent);
+            }}
+          >
             Go to Parent's Profile
           </button>
           {!child.verified && (

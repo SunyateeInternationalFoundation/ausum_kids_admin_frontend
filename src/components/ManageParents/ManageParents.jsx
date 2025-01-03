@@ -33,17 +33,24 @@ const ManageParents = () => {
   //   }
   // };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, name) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_WEBSITE}/parents/${id}`);
-      setParents((prev) => prev.filter((parent) => parent.id !== id));
+      const isConfirmed = confirm(`Are you sure you want to delete ${name} ?`);
+      console.log("isConfirmed", isConfirmed);
+      if (isConfirmed) {
+        await axios.delete(
+          `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
+        );
+
+        setParents((prev) => prev.filter((parent) => parent.id !== id));
+      }
     } catch (error) {
       console.error("Error deleting parent:", error);
     }
   };
-  console.log("parents", parents);
+
   return (
-    <div className="p-2 bg-gray-100 min-h-screen mt-2">
+    <div className="p-2 bg-gray-100 max-h-screen mt-2 overflow-y-auto">
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="table-auto w-full text-left border-collapse">
           <thead>
@@ -74,7 +81,7 @@ const ManageParents = () => {
           <tbody>
             {parents.map((parent) => (
               <tr
-                key={parent.id}
+                key={parent._id}
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
                 onClick={() => {
                   console.log("parent.id", parent._id);
@@ -107,7 +114,7 @@ const ManageParents = () => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    onClick={() => handleDelete(parent.id)}
+                    onClick={() => handleDelete(parent._id, parent.name)}
                     className="text-red-500 hover:text-red-700 transition duration-150"
                   >
                     <RiDeleteBin6Line size={24} />

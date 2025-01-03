@@ -5,10 +5,12 @@ let initialState = {
   email: "",
   isSuperAdmin: false,
   isLogin: false,
+  firstName: "",
+  lastName: "",
 };
 
 if (localStorage.getItem("admin")) {
-  const { email, isSuperAdmin, adminId } = JSON.parse(
+  const { email, isSuperAdmin, adminId, firstName, lastName } = JSON.parse(
     localStorage.getItem("admin")
   );
 
@@ -17,6 +19,8 @@ if (localStorage.getItem("admin")) {
     email,
     isSuperAdmin,
     isLogin: true,
+    firstName,
+    lastName,
   };
 }
 
@@ -32,7 +36,13 @@ const AdminSlice = createSlice({
       state.email = email;
       state.isSuperAdmin = isSuperAdmin;
     },
-
+    updateAdminDetails: (state, action) => {
+      const { firstName, lastName } = action.payload;
+      state.firstName = firstName ?? state.firstName;
+      state.lastName = lastName ?? state.lastName;
+      const updatedDetails = { ...state, firstName, lastName };
+      localStorage.setItem("admin", JSON.stringify(updatedDetails));
+    },
     setAdminLogout: (state, action) => {
       localStorage.clear();
       state.adminId = "";
@@ -43,6 +53,7 @@ const AdminSlice = createSlice({
   },
 });
 
-export const { setAdminLogin, setAdminLogout } = AdminSlice.actions;
+export const { setAdminLogin, setAdminLogout, updateAdminDetails } =
+  AdminSlice.actions;
 
 export default AdminSlice.reducer;

@@ -5,12 +5,22 @@ import {
   FaChevronRight,
   FaChild,
   FaTools,
+  FaUser,
   FaUsers,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
+import { IoIosSettings } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setAdminLogout } from "../../store/AdminSlice";
+import AddAdminModel from "./AddAdminModel";
 const Sidebar = () => {
   const [isClose, setIsClose] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const adminDetails = useSelector((state) => state.admin);
   const menuItems = [
     { name: "Manage Parents", path: "/manage-parents", icon: <FaUsers /> },
     { name: "Manage Child Profiles", path: "/manage-child", icon: <FaChild /> },
@@ -26,7 +36,7 @@ const Sidebar = () => {
     <div
       className={`flex flex-col ${
         isClose ? "w-20" : "w-64"
-      } h-screen bg-gray-100 transition-all duration-300 shadow-lg`}
+      } h-screen bg-gray-100 transition-all duration-300 shadow-lg overflow-y-auto`}
     >
       <div className="flex items-center justify-between p-4 border-b">
         {!isClose && (
@@ -56,15 +66,57 @@ const Sidebar = () => {
         ))}
       </div>
 
-      <div className="mt-auto p-4 border-t flex items-center justify-between">
+      <div className="mt-auto p-4 border-t flex items-center justify-between relative">
         {!isClose && (
           <div>
-            <h4 className="font-bold">Kayathri</h4>
-            <p className="text-sm text-gray-500">Kayu@email.com</p>
+            <button
+              className="relative rounded-md hover:bg-gray-200"
+              onClick={() => setIsOpen((prev) => !prev)}
+            >
+              <IoIosSettings />
+            </button>
+            <p className="text-xl font-semibold text-gray-500">
+              {adminDetails.email}
+            </p>
+
+            {isOpen && (
+              <div className="absolute bottom-14 right-0 bg-white shadow-md border rounded-md w-40 z-50">
+                <button
+                  className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  onClick={() => {
+                    setIsOpen(false);
+                    navigate("/admin-profile");
+                  }}
+                >
+                  Profile <FaUser className="mt-1 ml-2" />
+                </button>
+                {adminDetails.isSuperAdmin && (
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    Add Admin
+                  </button>
+                )}
+                <button
+                  className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  onClick={() => dispatch(setAdminLogout())}
+                >
+                  Log Out <FiLogOut className="mt-1 ml-2" />
+                </button>
+              </div>
+            )}
           </div>
         )}
-        {/* <div className="h-8 w-8 bg-gray-300 rounded-full"></div> */}
       </div>
+
+      <AddAdminModel
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
