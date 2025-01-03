@@ -4,69 +4,16 @@ import { useParams } from "react-router-dom";
 
 const ChildView = () => {
   const { id } = useParams();
-  const [child, setChild] = useState({
-    id: 1,
-    name: "Kayathri",
-    parentName: "Alagarsamy",
-    parentPhone: "1234567890",
-    parentEmail: "kayu@gmial.com",
-    address: "120, West Street",
-    city: "Tamil Nadu",
-    pincode: "600001",
-    verified: false,
-    selectedService: "Speech Therapy",
-    selectedDate: "2021-12-12",
-    selectedTime: "10:00 AM",
-    notes: "This is a test note",
-    totalSessions: 5,
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
-    history: [
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 1,
-        status: "Completed",
-      },
-      {
-        time: "2:00 PM",
-        date: "2021-12-15",
-        serviceProvider: "Dr.John",
-        sessionNo: 2,
-        status: "Completed",
-      },
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 3,
-        status: "Pending",
-      },
-      {
-        time: "2:00 PM",
-        date: "2021-12-15",
-        serviceProvider: "Dr.John",
-        sessionNo: 4,
-        status: "Pending",
-      },
-      {
-        time: "10:00 AM",
-        date: "2021-12-12",
-        serviceProvider: "Dr.Smith",
-        sessionNo: 5,
-        status: "Pending",
-      },
-    ],
-  });
+  const [child, setChild] = useState(null);
 
   useEffect(() => {
     const fetchChildDetails = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/childrens/${id}`
+          `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`
         );
-        setChild(response.data);
+
+        setChild(response.data.data);
       } catch (error) {
         console.error("Error fetching child details:", error);
       }
@@ -77,7 +24,7 @@ const ChildView = () => {
   async function approveChild(id) {
     try {
       await axios.post(
-        `${import.meta.env.VITE_WEBSITE}/childrens/${id}/verify`
+        `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`
       );
       setChild((prev) => ({ ...prev, verified: true }));
       alert("Child verified successfully!");
@@ -158,7 +105,7 @@ const ChildView = () => {
               </tr>
             </thead>
             <tbody>
-              {child.history.map((service, index) => (
+              {/* {child.history.map((service, index) => (
                 <tr key={index}>
                   <td className="border border-gray-300 px-4 py-2">
                     {service.sessionNo}
@@ -176,7 +123,7 @@ const ChildView = () => {
                     {service.status}
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>
