@@ -50,6 +50,10 @@ const Sidebar = () => {
             {/* <div className="h-10 w-10 bg-gray-300 rounded-full"></div> */}
             <div>
               <h2 className="text-2xl font-bold">Ausum Kids</h2>
+              <p className="text-xl font-semibold text-gray-500">
+              {"Logged in as "} 
+              { adminDetails.firstName || adminDetails.email}
+            </p>
             </div>
           </div>
         )}
@@ -75,15 +79,14 @@ const Sidebar = () => {
       <div className="mt-auto p-4 border-t flex items-center justify-between relative">
         {!isClose && (
           <div>
-            <button
-              className="relative rounded-md hover:bg-gray-200"
+            <button 
+              className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-md "
               onClick={() => setIsOpen((prev) => !prev)}
             >
-              <IoIosSettings />
+              <IoIosSettings className="text-lg mr-2"/>
+              Settings
             </button>
-            <p className="text-xl font-semibold text-gray-500">
-              {adminDetails.email}
-            </p>
+            
 
             {isOpen && (
               <div className="absolute bottom-14 right-0 bg-white shadow-md border rounded-md w-40 z-50">

@@ -34,9 +34,9 @@ const ChildView = () => {
   if (!child) return <div>Loading...</div>;
 
   return (
-    <div className="p-8 w-full h-full bg-white flex overflow-y-auto">
+    <div className="p-4 w-full h-full bg-white flex overflow-y-auto">
       <div className="w-full bg-white rounded-lg overflow-y-auto md:flex-row">
-        <div className="relative w-full p-8 flex flex-row gap-6">
+        <div className="relative w-full p-4 flex flex-row gap-6">
           <div className="py-6 w-1/4 h-full bg-gray-100 flex items-center rounded-lg justify-center">
             <img
               src={child.image}
