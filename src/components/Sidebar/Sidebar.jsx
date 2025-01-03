@@ -45,7 +45,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="flex flex-col p-4 space-y-6">
+      <div className="flex flex-col p-4 space-y-6 overflow-y-auto">
         {menuItems.map((item, index) => (
           <Link key={index} to={item.path} className="cursor-pointer">
             <div className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-md ">

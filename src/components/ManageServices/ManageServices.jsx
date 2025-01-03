@@ -160,37 +160,43 @@ const initialServices = [
     name: "Autism Therapy",
     about: "Specialized therapy for children with autism.",
     price: 2000,
+    sessions: 10,
   },
   {
     _id: 2,
     name: "Speech Therapy",
     about: "Improves speech and communication skills.",
     price: 1500,
+    sessions: 8,
   },
   {
     _id: 3,
     name: "Occupational Therapy",
     about:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elitLorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.",
     price: 1800,
+    sessions: 12,
   },
   {
     _id: 4,
     name: "Behavior Therapy",
     about: "Addresses challenging behaviors.",
     price: 2200,
+    sessions: 15,
   },
   {
     _id: 5,
     name: "Special Education",
     about: "Personalized education for special needs.",
     price: 2500,
+    sessions: 20,
   },
   {
     id: 6,
     name: "Psychological Counseling",
     about: "Emotional and mental health support.",
     price: 2000,
+    sessions: 10,
   },
 ];
 
@@ -202,6 +208,7 @@ const ManageServices = () => {
     name: "",
     about: "",
     price: "",
+    sessions: "",
   });
   const [expandedIds, setExpandedIds] = useState([]);
 
@@ -247,7 +254,7 @@ const ManageServices = () => {
   };
 
   return (
-    <div className="p-8 overflow-y-auto">
+    <div className="p-8 max-w-screen max-h-screen overflow-y-auto">
       <div className="flex justify-end mb-4">
         <button
           onClick={() => openModal()}
@@ -256,14 +263,15 @@ const ManageServices = () => {
           Add Service
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto">
         {services.map((service) => {
           const isExpanded = expandedIds.includes(service._id);
+          console.log("service", service);
           return (
             <div
               key={service._id}
               className={`border rounded-lg p-4 shadow-md bg-white flex flex-col justify-between transition-all duration-300 
-                h-[350px]
+                ${isExpanded ? "h-auto" : "h-[550px]"}
               `}
             >
               <div>
@@ -273,7 +281,7 @@ const ManageServices = () => {
                 <p className="text-gray-600 mt-2">
                   {isExpanded
                     ? service.about
-                    : `${service.about.slice(0, 200)}...`}
+                    : `${service.about.slice(0, 600)}...`}
                   {service.about.length > 100 && (
                     <span
                       onClick={() => toggleReadMore(service._id)}
@@ -283,25 +291,44 @@ const ManageServices = () => {
                     </span>
                   )}
                 </p>
-                <p className="text-gray-800 font-semibold mt-4">
-                  Price: ₹{service.price}
-                </p>
               </div>
-              <div className="mt-4 flex justify-end space-x-4">
-                <button
-                  onClick={() => openModal(service)}
-                  className="bg-green-600 text-white px-4 py-1 rounded shadow-md hover:bg-green-500"
-                >
-                  <FaEdit className="inline-block mr-2" />
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(service._id)}
-                  className="bg-red-600 text-white px-4 py-1 rounded shadow-md hover:bg-red-500"
-                >
-                  <RiDeleteBin6Line className="inline-block mr-2" />
-                  Delete
-                </button>
+
+              <div className="mt-4 space-x-4">
+                <div className="mt-4 space-y-2">
+                  <div className="bg-orange-100 p-2 rounded-lg flex justify-between">
+                    <p className="text-gray-800 font-semibold mt-4">Price:</p>
+                    <span className="text-gray-800 font-semibold mt-4">
+                      {" "}
+                      ₹{service.price}
+                    </span>
+                  </div>
+                  <div className="bg-red-100 p-2 rounded-lg flex justify-between">
+                    {" "}
+                    <p className="text-gray-800 font-semibold mt-4">
+                      No. of Sessions:
+                    </p>
+                    <span className="text-gray-800 font-semibold mt-4">
+                      {" "}
+                      {service.sessions}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-7 flex justify-end space-x-4">
+                  <button
+                    onClick={() => openModal(service)}
+                    className="bg-[#14b8a6] text-white px-4 py-1 rounded shadow-md hover:bg-[#0d9488]"
+                  >
+                    <FaEdit className="inline-block mr-2" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(service._id)}
+                    className="bg-[#fb7185] text-white px-4 py-1 rounded shadow-md hover:bg-[#db2777]"
+                  >
+                    <RiDeleteBin6Line className="inline-block mr-2" />
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           );
@@ -355,6 +382,22 @@ const ManageServices = () => {
                     setCurrentService((prev) => ({
                       ...prev,
                       price: e.target.value,
+                    }))
+                  }
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700">
+                  No. of Sessions
+                </label>
+                <input
+                  type="number"
+                  value={currentService.sessions}
+                  onChange={(e) =>
+                    setCurrentService((prev) => ({
+                      ...prev,
+                      sessions: e.target.value,
                     }))
                   }
                   className="w-full px-3 py-2 border rounded"
