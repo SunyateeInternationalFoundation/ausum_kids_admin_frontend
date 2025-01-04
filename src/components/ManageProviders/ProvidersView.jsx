@@ -4,17 +4,7 @@ import { useParams } from "react-router-dom";
 
 const ProvidersView = () => {
   const { id } = useParams();
-  const [provider, setProvider] = useState({
-    id: 1,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-    address: "bangalore",
-    city: "bangalore",
-    pincode: "560001",
-  });
+  const [provider, setProvider] = useState(null);
 
   useEffect(() => {
     const fetchProviderDetails = async () => {
@@ -22,7 +12,6 @@ const ProvidersView = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`
         );
-
         setProvider(response.data.data);
       } catch (error) {
         console.error("Error fetching provider details:", error);

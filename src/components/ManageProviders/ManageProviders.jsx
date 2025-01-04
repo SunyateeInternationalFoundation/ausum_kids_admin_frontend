@@ -2,35 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-const initialProvider = [
-  {
-    _id: 1,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-  {
-    _id: 2,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-  {
-    _id: 3,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-];
+
 const ManageProviders = () => {
   const navigate = useNavigate();
-  const [providers, setProviders] = useState(initialProvider);
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
     const fetchProviders = async () => {
