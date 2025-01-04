@@ -54,7 +54,7 @@ const AdminProfile = () => {
   };
 
   return (
-    <div className="p-6 bg-white mx-20 shadow-md rounded-md max-h-screen  max-w-screen mt-20 overflow-y-auto">
+    <div className="p-6 bg-white shadow-md rounded-md max-h-screen  max-w-screen  overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4">Profile</h2>
       <div className="flex flex-col space-y-4">
         <div>

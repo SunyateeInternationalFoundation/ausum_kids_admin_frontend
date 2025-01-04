@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FaChartBar,
   FaChevronLeft,
@@ -22,6 +22,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const adminDetails = useSelector((state) => state.admin);
+  const settingsRef = useRef(null);
   const menuItems = [
     { name: "Manage Parents", path: "/manage-parents", icon: <FaUsers /> },
     { name: "Manage Child Profiles", path: "/manage-child", icon: <FaChild /> },
@@ -37,7 +38,18 @@ const Sidebar = () => {
       icon: <FaHandsHelping />,
     },
   ];
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div
       className={`flex flex-col ${
@@ -51,9 +63,9 @@ const Sidebar = () => {
             <div>
               <h2 className="text-2xl font-bold">Ausum Kids</h2>
               <p className="text-xl font-semibold text-gray-500">
-              {"Logged in as "} 
-              { adminDetails.firstName || adminDetails.email}
-            </p>
+                {"Logged in as "}
+                {adminDetails.firstName || adminDetails.email}
+              </p>
             </div>
           </div>
         )}
@@ -78,18 +90,17 @@ const Sidebar = () => {
 
       <div className="mt-auto p-4 border-t flex items-center justify-between relative">
         {!isClose && (
-          <div>
-            <button 
+          <div ref={settingsRef}>
+            <button
               className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-md "
               onClick={() => setIsOpen((prev) => !prev)}
             >
-              <IoIosSettings className="text-lg mr-2"/>
+              <IoIosSettings className="text-lg mr-2" />
               Settings
             </button>
-            
 
             {isOpen && (
-              <div className="absolute bottom-14 right-0 bg-white shadow-md border rounded-md w-40 z-50">
+              <div className="absolute bottom-14 right-14 bg-white shadow-md border rounded-md w-40 z-50">
                 <button
                   className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                   onClick={() => {
@@ -112,7 +123,10 @@ const Sidebar = () => {
                 )}
                 <button
                   className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => dispatch(setAdminLogout())}
+                  onClick={() => {
+                    dispatch(setAdminLogout());
+                    window.location.href = "http://localhost:3000";
+                  }}
                 >
                   Log Out <FiLogOut className="mt-1 ml-2" />
                 </button>
