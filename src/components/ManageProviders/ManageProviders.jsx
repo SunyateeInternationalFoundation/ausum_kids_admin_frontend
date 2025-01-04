@@ -2,36 +2,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-const initialProvider = [
-  {
-    _id: 1,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-  {
-    _id: 2,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-  {
-    _id: 3,
-    image: "",
-    name: "kayu",
-    phone: "1233455677",
-    email: "kayu@gmail.com",
-    serviceName: "autism therapy",
-  },
-];
+
 const ManageProviders = () => {
   const navigate = useNavigate();
-  const [providers, setProviders] = useState(initialProvider);
-
+  const [providers, setProviders] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newProvider, setNewProvider] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    pincode: "",
+    serviceName: "",
+    email: "",
+  });
   useEffect(() => {
     const fetchProviders = async () => {
       try {
@@ -62,9 +46,44 @@ const ManageProviders = () => {
       console.error("Error deleting Provider:", error);
     }
   };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProvider((prev) => ({ ...prev, [name]: value }));
+  };
 
+  const handleAddProvider = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_WEBSITE}/manage-providers`,
+        newProvider
+      );
+      setProviders((prev) => [...prev, response.data]);
+      setIsModalOpen(false);
+      setNewProvider({
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        pincode: "",
+        serviceName: "",
+        email: "",
+      });
+    } catch (error) {
+      console.error("Error adding Provider:", error);
+    }
+  };
   return (
     <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold">Manage Providers</h1>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Add Provider
+        </button>
+      </div>
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="table-auto w-full text-left border-collapse">
           <thead>
@@ -134,6 +153,113 @@ const ManageProviders = () => {
           </tbody>
         </table>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] overflow-y-auto">
+            <h2 className="text-lg font-bold mb-4">Add New Provider</h2>
+            <form onSubmit={handleAddProvider}>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={newProvider.name}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={newProvider.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={newProvider.address}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={newProvider.city}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Pincode
+                </label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={newProvider.pincode}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Service Name
+                </label>
+                <input
+                  type="text"
+                  name="serviceName"
+                  value={newProvider.serviceName}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-1">
+                <label className="block mb-2 text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={newProvider.email}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mr-2"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
