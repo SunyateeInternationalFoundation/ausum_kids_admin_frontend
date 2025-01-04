@@ -16,6 +16,7 @@ const ManageProviders = () => {
     serviceName: "",
     email: "",
   });
+
   useEffect(() => {
     const fetchProviders = async () => {
       try {
