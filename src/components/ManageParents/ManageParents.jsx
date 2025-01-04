@@ -5,7 +5,15 @@ import { useNavigate } from "react-router-dom";
 const ManageParents = () => {
   const navigate = useNavigate();
   const [parents, setParents] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
+  const [newParent, setNewParent] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    pincode: "",
+  });
   useEffect(() => {
     const fetchParents = async () => {
       try {
@@ -49,9 +57,148 @@ const ManageParents = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewParent((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_WEBSITE}/manage-parents`,
+        newParent
+      );
+      setParents((prev) => [...prev, newParent]);
+      setShowModal(false);
+      setNewParent({
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        city: "",
+        pincode: "",
+      });
+    } catch (error) {
+      console.error("Error adding parent:", error);
+    }
+  };
+
   return (
     <div className="p-2 bg-gray-100 max-h-screen mt-2 overflow-y-auto">
-      <div className="overflow-x-auto shadow-md rounded-lg bg-white">
+      <button
+        onClick={() => setShowModal(true)}
+        className="bg-blue-500 text-white p-2 rounded-lg absolute top-4 right-4 mb-10"
+      >
+        Add Parent
+      </button>
+
+      {showModal && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <h2 className="text-xl font-semibold mb-4">Add Parent</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={newParent.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={newParent.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={newParent.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={newParent.address}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  value={newParent.city}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Pincode
+                </label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={newParent.pincode}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                >
+                  Add Parent
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <div className="overflow-x-auto shadow-md rounded-lg bg-white mt-12">
         <table className="table-auto w-full text-left border-collapse">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
