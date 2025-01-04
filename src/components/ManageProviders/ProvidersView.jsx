@@ -16,7 +16,6 @@ const ProvidersView = () => {
         );
         setProvider(response.data.data);
         setEditedProvider(response.data.data);
-        set;
       } catch (error) {
         console.error("Error fetching provider details:", error);
       }
