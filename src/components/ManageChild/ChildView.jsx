@@ -63,10 +63,6 @@ const ChildView = () => {
     setEditedChild((prev) => ({
       ...prev,
       [name]: value,
-      parent: {
-        ...prev.parent,
-        [name]: value,
-      },
     }));
   };
 
@@ -93,48 +89,24 @@ const ChildView = () => {
                   onChange={handleChange}
                   placeholder="Child Name"
                 />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="name"
-                  value={editedChild.parent.name}
-                  onChange={handleChange}
-                  placeholder="Parent's Name"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="address"
-                  value={editedChild.parent.address}
-                  onChange={handleChange}
-                  placeholder="Address"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="email"
-                  value={editedChild.parent.email}
-                  onChange={handleChange}
-                  placeholder="Parent's Email"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="city"
-                  value={editedChild.parent.city}
-                  onChange={handleChange}
-                  placeholder="City"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="phone"
-                  value={editedChild.parent.phone}
-                  onChange={handleChange}
-                  placeholder="Parent's Phone"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="pincode"
-                  value={editedChild.parent.pincode}
-                  onChange={handleChange}
-                  placeholder="Pincode"
-                />
+                <p className="text-gray-600">
+                  <strong>Parent's Name:</strong> {child.parent.name}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Address:</strong> {child.parent.address}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Parent's Email:</strong> {child.parent.email}
+                </p>
+                <p className="text-gray-600">
+                  <strong>City:</strong> {child.parent.city}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Parent's Phone:</strong> {child.parent.phone}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Pincode:</strong> {child.parent.pincode}
+                </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
                 </p>
