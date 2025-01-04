@@ -13,6 +13,8 @@ const ManageParents = () => {
     address: "",
     city: "",
     pincode: "",
+    verified: false,
+    image:""
   });
   useEffect(() => {
     const fetchParents = async () => {
@@ -81,6 +83,8 @@ const ManageParents = () => {
         address: "",
         city: "",
         pincode: "",
+        verified: false,
+        image:""
       });
     } catch (error) {
       console.error("Error adding parent:", error);

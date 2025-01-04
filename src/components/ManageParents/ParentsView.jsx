@@ -24,7 +24,7 @@ const ParentsView = () => {
 
   async function approveParent(id) {
     try {
-      await axios.post(`${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`);
+      await axios.patch(`${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`);
       setParent((prev) => ({ ...prev, verified: true }));
       alert("Parent verified successfully!");
     } catch (error) {
