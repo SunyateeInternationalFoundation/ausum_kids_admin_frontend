@@ -29,12 +29,15 @@ const AdminSlice = createSlice({
   initialState,
   reducers: {
     setAdminLogin: (state, action) => {
-      const { adminId, email, isSuperAdmin } = action.payload;
+      const { adminId, email, isSuperAdmin, firstName, lastName } =
+        action.payload;
       localStorage.setItem("admin", JSON.stringify(action.payload));
       state.adminId = adminId;
       state.isLogin = true;
       state.email = email;
       state.isSuperAdmin = isSuperAdmin;
+      state.firstName = firstName;
+      state.lastName = lastName;
     },
     updateAdminDetails: (state, action) => {
       const { firstName, lastName } = action.payload;

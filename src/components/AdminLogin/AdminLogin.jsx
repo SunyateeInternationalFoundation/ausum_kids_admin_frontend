@@ -48,6 +48,8 @@ const AdminLogin = () => {
           email: data.email,
           isSuperAdmin: data.isSuperAdmin,
           isLogin: true,
+          firstName: data?.firstName || "",
+          lastName: data?.lastName || "",
         };
         setMessage("Login successful!");
         alert("Login successful!");
