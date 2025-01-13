@@ -270,9 +270,11 @@ const ManageChild = () => {
                 <td className="px-6 py-4 text-gray-700 font-medium">
                   {child.name}
                 </td>
-                <td className="px-6 py-4 text-gray-600">{child.parent.name}</td>
                 <td className="px-6 py-4 text-gray-600">
-                  {child.parent.phone}
+                  {child?.parent?.name}
+                </td>
+                <td className="px-6 py-4 text-gray-600">
+                  {child?.parent?.phone}
                 </td>
                 <td
                   className="px-6 py-4 text-center"
