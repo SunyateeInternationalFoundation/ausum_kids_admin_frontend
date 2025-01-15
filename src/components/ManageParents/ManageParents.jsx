@@ -154,7 +154,7 @@ const ManageParents = () => {
         {parents.map((parent) => (
           <div
             key={parent._id}
-            className="bg-white rounded-lg shadow-md w-full overflow-hidden"
+            className="bg-white rounded-lg shadow-md w-full overflow-hidden cursor-pointer"
             onClick={() => {
               console.log("parent.id", parent._id);
 
@@ -233,7 +233,7 @@ const ManageParents = () => {
 
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-96">
+          <div className="bg-white p-6 rounded-lg w-[500px]">
             <h2 className="text-xl font-semibold mb-4">Add Parent</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
