@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 
 const ManageProviders = () => {
@@ -75,192 +74,184 @@ const ManageProviders = () => {
     }
   };
   return (
-    <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">Manage Providers</h1>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add Provider
-        </button>
-      </div>
-      <div className="overflow-x-auto shadow-md rounded-lg bg-white">
-        <table className="table-auto w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Profile
-              </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Phone Number
-              </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider">
-                Service Name
-              </th>
-              <th className="px-6 py-3 text-sm font-semibold tracking-wider text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {providers.length === 0 && (
-              <tr>
-                <td colSpan="5" className="text-center py-4">
-                  No Providers found!
-                </td>
-              </tr>
-            )}
-            {providers.map((provider) => (
-              <tr
+    <div className="p-6">
+      <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold">Manage Providers</h1>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add Provider
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {providers.length === 0 ? (
+            <div className="col-span-full text-center py-4 text-gray-500">
+              No Providers found!
+            </div>
+          ) : (
+            providers.map((provider) => (
+              <div
                 key={provider._id}
-                className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
+                className="bg-white rounded-lg shadow-md w-full overflow-hidden cursor-pointer"
                 onClick={() => navigate(`/manage-providers/${provider._id}`)}
               >
-                <td className="px-6 py-4">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${provider.name}`}
-                    alt={`${provider.name} profile`}
-                    className="h-12 w-12 rounded-full border-2 border-gray-300 shadow-sm"
-                  />
-                </td>
-                <td className="px-6 py-4 text-gray-700 font-medium">
-                  {provider.name}
-                </td>
-                <td className="px-6 py-4 text-gray-600">{provider.phone}</td>
-                <td className="px-6 py-4 text-gray-600">{provider.email}</td>
-                <td className="px-6 py-4 text-gray-600">
-                  {provider.serviceName}
-                </td>
-                <td
-                  className="px-6 py-4 text-center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    onClick={() => handleDelete(provider._id, provider.name)}
-                    className="text-red-500 hover:text-red-700 transition duration-150"
-                  >
-                    <RiDeleteBin6Line size={24} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] overflow-y-auto">
-            <h2 className="text-lg font-bold mb-4">Add New Provider</h2>
-            <form onSubmit={handleAddProvider}>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newProvider.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg font-semibold">
+                      {provider.name
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)}
+                    </div>
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {provider.name}
+                    </h2>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div>
+                      <div className="text-sm text-gray-500">Phone</div>
+                      <div className="font-semibold">{provider.phone}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Email</div>
+                      <div className="font-semibold">{provider.email}</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 text-right">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(provider._id, provider.name);
+                      }}
+                      className="bg-pink-100 w-20 rounded-lg text-pink-800 hover:text-red-700 transition duration-150"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={newProvider.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={newProvider.address}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={newProvider.city}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">
-                  Pincode
-                </label>
-                <input
-                  type="text"
-                  name="pincode"
-                  value={newProvider.pincode}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">
-                  Service Name
-                </label>
-                <input
-                  type="text"
-                  name="serviceName"
-                  value={newProvider.serviceName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-1">
-                <label className="block mb-2 text-sm font-medium">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={newProvider.email}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mr-2"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
+            ))
+          )}
         </div>
-      )}
+
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] overflow-y-auto">
+              <h2 className="text-lg font-bold mb-4">Add New Provider</h2>
+              <form onSubmit={handleAddProvider}>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newProvider.name}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={newProvider.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={newProvider.address}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">City</label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={newProvider.city}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">
+                    Pincode
+                  </label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    value={newProvider.pincode}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">
+                    Service Name
+                  </label>
+                  <input
+                    type="text"
+                    name="serviceName"
+                    value={newProvider.serviceName}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="mb-1">
+                  <label className="block mb-2 text-sm font-medium">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={newProvider.email}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 mr-2"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

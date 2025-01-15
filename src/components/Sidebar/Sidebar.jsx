@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaChartBar,
   FaChevronLeft,
@@ -54,7 +54,7 @@ const Sidebar = () => {
     <div
       className={`flex flex-col ${
         isClose ? "w-20" : "w-64"
-      } h-screen bg-gray-100 transition-all duration-300 shadow-lg overflow-y-auto`}
+      } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
     >
       <div className="flex items-center justify-between p-4 border-b">
         {!isClose && (
@@ -80,7 +80,7 @@ const Sidebar = () => {
       <div className="flex flex-col p-4 space-y-6 overflow-y-auto">
         {menuItems.map((item, index) => (
           <Link key={index} to={item.path} className="cursor-pointer">
-            <div className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-md ">
+            <div className="flex items-center space-x-4 text-pink-700 hover:bg-gray-200 p-2 rounded-md ">
               <span className="text-lg">{item.icon}</span>
               {!isClose && <span>{item.name}</span>}
             </div>

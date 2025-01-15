@@ -1,26 +1,30 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Calendar, Check, IndianRupee, Pencil } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ParentsView = () => {
   const { id } = useParams();
-  const [parent, setParent] = useState(null);
+  const [parent, setParent] = useState({
+    id: "1",
+    name: "Sarah Johnson",
+    email: "sarah.j@example.com",
+    phone: "+1 234 567 8900",
+    address: "123 Main St",
+    city: "New York",
+    pincode: "10001",
+    verified: false,
+    image:
+      "https://media.istockphoto.com/id/2052635887/photo/portrait-of-indian-young-woman-wearing-casual-clothing-isolated-on-white-background-stock.jpg?s=2048x2048&w=is&k=20&c=v_ZKLokz6oua50P-EXsKiddd8An8ktEJWLc0xo2Ycww=",
+    children: [
+      { id: "1", name: "Emma Johnson", age: 8 },
+      { id: "2", name: "Noah Johnson", age: 6 },
+    ],
+    totalSessions: 24,
+    totalSpent: 2400,
+  });
   const [isEditing, setIsEditing] = useState(false);
-  const [editedParent, setEditedParent] = useState({});
-  useEffect(() => {
-    const fetchParentDetails = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
-        );
-        setParent(response.data.data);
-        setEditedParent(response.data.data);
-      } catch (error) {
-        console.error("Error fetching parent details:", error);
-      }
-    };
-    fetchParentDetails();
-  }, [id]);
+  const [editedParent, setEditedParent] = useState(parent);
 
   async function approveParent(id) {
     try {
@@ -31,6 +35,7 @@ const ParentsView = () => {
       console.error("Error verifying parent:", error);
     }
   }
+
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditedParent((prev) => ({ ...prev, [name]: value }));
@@ -49,148 +54,177 @@ const ParentsView = () => {
       console.error("Error updating parent:", error);
     }
   };
-
+  // useEffect(() => {
+  //   const fetchParentDetails = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
+  //       );
+  //       setParent(response.data.data);
+  //       setEditedParent(response.data.data);
+  //     } catch (error) {
+  //       console.error("Error fetching parent details:", error);
+  //     }
+  //   };
+  //   fetchParentDetails();
+  // }, [id]);
   const handleCancel = () => {
     setIsEditing(false);
     setEditedParent(parent);
   };
-  if (!parent) return <div>Loading...</div>;
 
   return (
-    <div className="px-8 min-h-screen bg-white flex justify-between overflow-y-auto">
-      <div className="relative w-full max-w-screen mt-10 bg-white rounded-lg">
-        <div className="w-full flex justify-center py-6 bg-gray-100 rounded-t-lg">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1679872282827-ecdb5200142f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt={`${parent.name}`}
-            className="rounded-full shadow-md object-cover w-32 h-32"
-          />
-        </div>
-
-        <div className="w-full p-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-6">
-            {parent.name}
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {isEditing ? (
-              <>
-                <div>
-                  <label>Name:</label>
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Parent Information Card */}
+        <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="px-6 py-4 flex items-center justify-between">
+            <h2 className="text-xl font-bold">Parent Information</h2>
+            <div className="flex gap-2">
+              {!parent.verified && (
+                <button
+                  onClick={() => approveParent(parent.id)}
+                  className="inline-flex items-center px-3 py-1.5 bg-[#0d9488] text-white rounded-md text-sm font-medium"
+                >
+                  <Check className="mr-2 h-4 w-4" />
+                  Verify
+                </button>
+              )}
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className="inline-flex items-center px-3 py-1.5  rounded-md text-sm font-medium text-white bg-[#db2777]"
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </button>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden">
+                <img
+                  src={parent.image}
+                  alt={parent.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="space-y-1 text-center">
+                {isEditing ? (
                   <input
                     type="text"
                     name="name"
                     value={editedParent.name}
                     onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
+                    className="border rounded-md px-2 py-1"
                   />
-                </div>
-                <div>
-                  <label>Phone:</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={editedParent.phone}
-                    onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={editedParent.email}
-                    onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label>Address:</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={editedParent.address}
-                    onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label>City:</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={editedParent.city}
-                    onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
-                  />
-                </div>
-                <div>
-                  <label>Pincode:</label>
-                  <input
-                    type="text"
-                    name="pincode"
-                    value={editedParent.pincode}
-                    onChange={handleEditChange}
-                    className="mt-2 p-2 border rounded"
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="text-gray-600">
-                  <strong>Phone:</strong> {parent.phone}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Address:</strong> {parent.address}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Email:</strong> {parent.email}
-                </p>
-                <p className="text-gray-600">
-                  <strong>City:</strong> {parent.city}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Verified:</strong> {parent.verified ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Pincode:</strong> {parent.pincode}
-                </p>
-              </>
+                ) : (
+                  <h3 className="text-2xl font-semibold">{parent.name}</h3>
+                )}
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                    parent.verified
+                      ? "bg-green-100 text-green-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {parent.verified ? "Verified" : "Pending Verification"}
+                </span>
+              </div>
+              <div className="w-full space-y-2">
+                {["email", "phone", "address", "city", "pincode"].map((field) =>
+                  isEditing ? (
+                    <div key={field} className="flex justify-between">
+                      <span className="text-gray-500 capitalize">{field}:</span>
+                      <input
+                        type="text"
+                        name={field}
+                        value={editedParent[field]}
+                        onChange={handleEditChange}
+                        className="border rounded-md px-2 py-1"
+                      />
+                    </div>
+                  ) : (
+                    <div key={field} className="flex justify-between">
+                      <span className="text-gray-500 capitalize">{field}:</span>
+                      <span>{parent[field]}</span>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+            {isEditing && (
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={handleUpdate}
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mr-2"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+              </div>
             )}
           </div>
         </div>
-        <div className="absolute bottom-4 right-4 flex gap-4">
-          {isEditing ? (
-            <>
-              <button
-                onClick={handleUpdate}
-                className="bg-violet-800 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
-              >
-                Save
-              </button>
-              <button
-                onClick={handleCancel}
-                className="bg-gray-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-400 transition duration-300"
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="bg-violet-800 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
-            >
-              Edit Profile
-            </button>
-          )}
-          {!parent.verified && !isEditing && (
-            <button
-              className="bg-violet-800 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
-              onClick={() => approveParent(id)}
-            >
-              Approve Profile
-            </button>
-          )}
+
+        <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="px-6 py-4">
+            <h2 className="text-xl font-bold">Children</h2>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              {parent?.children?.map((child) => (
+                <div
+                  key={child.id}
+                  className="flex items-center justify-between p-4 rounded-lg bg-pink-50 border border-pink-200 shadow-sm"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center">
+                      <span className="text-lg font-medium">
+                        {child.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{child.name}</p>
+                      <p className="text-sm text-gray-500">Age: {child.age}</p>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1.5 rounded-md text-sm font-medium text-white bg-[#db2777]">
+                    View Details
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Statistics Row */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="px-6 py-4 flex items-center justify-between">
+            <h2 className="text-xl font-bold">Total Sessions</h2>
+            <Calendar className="h-4 w-4 text-green-500" />
+          </div>
+          <div className="px-6 pt-2 pb-4">
+            <div className="text-3xl font-bold">{parent.totalSessions}</div>
+            <p className="text-xs text-gray-500">Sessions completed</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="px-6 py-4 flex items-center justify-between">
+            <h2 className="text-xl font-bold">Total Spent</h2>
+            <IndianRupee className="h-4 w-4 text-orange-500" />
+          </div>
+          <div className="px-6 pt-2 pb-4">
+            <div className="text-3xl font-bold">₹{parent.totalSpent}</div>
+            <p className="text-xs text-gray-500">Amount spent on sessions</p>
+          </div>
         </div>
       </div>
     </div>

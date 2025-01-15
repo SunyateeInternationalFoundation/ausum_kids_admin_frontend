@@ -122,7 +122,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="name"
-                  value={newChild.name}
+                  value={newChild?.name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -135,7 +135,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="parent.name"
-                  value={newChild.parent.name}
+                  value={newChild?.parent?.name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -148,7 +148,7 @@ const ManageChild = () => {
                 <input
                   type="email"
                   name="parent.email"
-                  value={newChild.parent.email}
+                  value={newChild?.parent?.email}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -161,7 +161,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="parent.phone"
-                  value={newChild.parent.phone}
+                  value={newChild?.parent?.phone}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -174,7 +174,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="selectedService"
-                  value={newChild.selectedService}
+                  value={newChild?.selectedService}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -187,7 +187,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="selectedTime"
-                  value={newChild.selectedTime}
+                  value={newChild?.selectedTime}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -200,7 +200,7 @@ const ManageChild = () => {
                 <input
                   type="text"
                   name="selectedDate"
-                  value={newChild.selectedDate}
+                  value={newChild?.selectedDate}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   required
@@ -268,11 +268,13 @@ const ManageChild = () => {
                   />
                 </td>
                 <td className="px-6 py-4 text-gray-700 font-medium">
-                  {child.name}
+                  {child?.name}
                 </td>
-                <td className="px-6 py-4 text-gray-600">{child.parent.name}</td>
                 <td className="px-6 py-4 text-gray-600">
-                  {child.parent.phone}
+                  {child?.parent?.name}
+                </td>
+                <td className="px-6 py-4 text-gray-600">
+                  {child?.parent?.phone}
                 </td>
                 <td
                   className="px-6 py-4 text-center"

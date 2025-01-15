@@ -23,7 +23,7 @@ const ChildView = () => {
     };
     fetchChildDetails();
   }, [id]);
-
+  console.log("child", child);
   async function approveChild(id) {
     try {
       await axios.post(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
@@ -90,22 +90,22 @@ const ChildView = () => {
                   placeholder="Child Name"
                 />
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child.parent.name}
+                  <strong>Parent's Name:</strong> {child?.parent?.name}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child.parent.address}
+                  <strong>Address:</strong> {child?.parent?.address}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child.parent.email}
+                  <strong>Parent's Email:</strong> {child?.parent?.email}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child.parent.city}
+                  <strong>City:</strong> {child?.parent?.city}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child.parent.phone}
+                  <strong>Parent's Phone:</strong> {child?.parent?.phone}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child.parent.pincode}
+                  <strong>Pincode:</strong> {child?.parent?.pincode}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
@@ -145,22 +145,22 @@ const ChildView = () => {
                   <strong>Child Name:</strong> {child.name}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child.parent.name}
+                  <strong>Parent's Name:</strong> {child?.parent?.name}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child.parent.address}
+                  <strong>Address:</strong> {child?.parent?.address}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child.parent.email}
+                  <strong>Parent's Email:</strong> {child?.parent?.email}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child.parent.city}
+                  <strong>City:</strong> {child?.parent?.city}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child.parent.phone}
+                  <strong>Parent's Phone:</strong> {child?.parent?.phone}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child.parent.pincode}
+                  <strong>Pincode:</strong> {child?.parent?.pincode}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
@@ -226,25 +226,26 @@ const ChildView = () => {
               </tr>
             </thead>
             <tbody>
-              {child.history.map((service, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {service.sessionNo}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {service.date}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {service.time}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {service.serviceProvider}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {service.status}
-                  </td>
-                </tr>
-              ))}
+              {child?.history?.length > 0 &&
+                child?.history?.map((service, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {service.sessionNo}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {service.date}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {service.time}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {service.serviceProvider}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {service.status}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -252,12 +253,12 @@ const ChildView = () => {
           <button
             className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
             onClick={() => {
-              navigate("/manage-parents/" + child.parent._id);
+              navigate("/manage-parents/" + child?.parent?._id);
             }}
           >
             Go to Parent's Profile
           </button>
-          {!child.verified && (
+          {!child?.verified && (
             <button
               className="bg-violet-800 font-semibold text-white py-3 px-6 rounded-lg shadow-lg hover:bg-violet-600 transition duration-300"
               onClick={() => approveChild(id)}
