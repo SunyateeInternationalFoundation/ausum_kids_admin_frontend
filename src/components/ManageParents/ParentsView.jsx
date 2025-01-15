@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Calendar, Check, IndianRupee, Pencil } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const ParentsView = () => {
@@ -54,20 +54,20 @@ const ParentsView = () => {
       console.error("Error updating parent:", error);
     }
   };
-  // useEffect(() => {
-  //   const fetchParentDetails = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
-  //       );
-  //       setParent(response.data.data);
-  //       setEditedParent(response.data.data);
-  //     } catch (error) {
-  //       console.error("Error fetching parent details:", error);
-  //     }
-  //   };
-  //   fetchParentDetails();
-  // }, [id]);
+  useEffect(() => {
+    const fetchParentDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
+        );
+        setParent(response.data.data);
+        setEditedParent(response.data.data);
+      } catch (error) {
+        console.error("Error fetching parent details:", error);
+      }
+    };
+    fetchParentDetails();
+  }, [id]);
   const handleCancel = () => {
     setIsEditing(false);
     setEditedParent(parent);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Check, Pencil } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 const ProvidersView = () => {
   const { id } = useParams();
@@ -52,20 +52,20 @@ const ProvidersView = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const fetchProviderDetails = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`
-  //       );
-  //       setProvider(response.data.data);
-  //       setEditedProvider(response.data.data);
-  //     } catch (error) {
-  //       console.error("Error fetching provider details:", error);
-  //     }
-  //   };
-  //   fetchProviderDetails();
-  // }, [id]);
+  useEffect(() => {
+    const fetchProviderDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`
+        );
+        setProvider(response.data.data);
+        setEditedProvider(response.data.data);
+      } catch (error) {
+        console.error("Error fetching provider details:", error);
+      }
+    };
+    fetchProviderDetails();
+  }, []);
 
   async function approveProvider(id) {
     try {
@@ -295,7 +295,6 @@ const ProvidersView = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Customers List */}
         <div className="bg-white rounded-lg border shadow-sm p-6">
           <h2 className="text-xl font-bold mb-4">Customers</h2>
           <div className="overflow-x-auto">
@@ -392,7 +391,7 @@ const ProvidersView = () => {
                     key={service}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
                   >
-                    {service}
+                    {service.name}
                   </span>
                 ))}
               </div>
