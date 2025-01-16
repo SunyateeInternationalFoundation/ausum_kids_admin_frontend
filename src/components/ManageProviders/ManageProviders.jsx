@@ -12,7 +12,7 @@ const ManageProviders = () => {
     address: "",
     city: "",
     pincode: "",
-    serviceName: "",
+    serviceName: [],
     email: "",
   });
 
@@ -48,7 +48,14 @@ const ManageProviders = () => {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProvider((prev) => ({ ...prev, [name]: value }));
+    if (name === "serviceName") {
+      setNewProvider((prev) => ({
+        ...prev,
+        serviceName: value.split(",").map((item) => item.trim()),
+      }));
+    } else {
+      setNewProvider((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleAddProvider = async (e) => {
@@ -58,7 +65,7 @@ const ManageProviders = () => {
         `${import.meta.env.VITE_WEBSITE}/manage-providers`,
         newProvider
       );
-      setProviders((prev) => [...prev, response.data]);
+      setProviders((prev) => [...prev, response.data.data]);
       setIsModalOpen(false);
       setNewProvider({
         name: "",
@@ -213,9 +220,10 @@ const ManageProviders = () => {
                   <input
                     type="text"
                     name="serviceName"
-                    value={newProvider.serviceName}
+                    value={newProvider.serviceName.join(", ")}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded"
+                    placeholder="Enter services separated by commas"
                     required
                   />
                 </div>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 
 const ManageChild = () => {
@@ -9,19 +8,16 @@ const ManageChild = () => {
   const [showModal, setShowModal] = useState(false);
   const [newChild, setNewChild] = useState({
     name: "",
-    parent: {
-      name: "",
-      address: "",
+    basicInfo: {
+      childFullName: "",
+      parentGuardianName: "",
       email: "",
-      city: "",
-      phone: "",
-      pincode: "",
+      phoneNumber: "",
     },
-    verified: false,
+
     selectedService: "",
     selectedDate: "",
     selectedTime: "",
-    notes: "",
   });
 
   useEffect(() => {
@@ -30,8 +26,9 @@ const ManageChild = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_WEBSITE}/manage-child`
         );
-        console.log(response.data.data)
+        console.log("response", response);
         setChildrens(response.data.data);
+        console.log("CHILDRENS", childrens);
       } catch (error) {
         console.error("Error fetching children:", error);
       }
@@ -41,12 +38,12 @@ const ManageChild = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith("parent.")) {
+    if (name.startsWith("basicInfo.")) {
       const field = name.split(".")[1];
       setNewChild((prev) => ({
         ...prev,
-        parent: {
-          ...prev.parent,
+        basicInfo: {
+          ...prev.basicInfo,
           [field]: value,
         },
       }));
@@ -65,23 +62,20 @@ const ManageChild = () => {
         `${import.meta.env.VITE_WEBSITE}/manage-child`,
         newChild
       );
-      setChildrens((prev) => [...prev, response.data]);
+      setChildrens((prev) => [...prev, response.data.data]);
       setShowModal(false);
       setNewChild({
         name: "",
-        parent: {
-          name: "",
-          address: "",
+        basicInfo: {
+          childFullName: "",
+          parentGuardianName: "",
           email: "",
-          city: "",
-          phone: "",
-          pincode: "",
+          phoneNumber: "",
         },
-        verified: false,
+
         selectedService: "",
         selectedDate: "",
         selectedTime: "",
-        notes: "",
       });
     } catch (error) {
       console.error("Error adding child:", error);
@@ -97,136 +91,198 @@ const ManageChild = () => {
 
     try {
       await axios.delete(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
-      setChildrens((prev) => prev.filter((child) => child._id !== id));
+      setChildrens((prev) => prev.filter((child) => child?._id !== id));
     } catch (error) {
       console.error("Error deleting child:", error);
     }
   };
 
   return (
-    <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-blue-500 text-white p-2 rounded-lg absolute top-4 right-4 mb-10"
-      >
-        Add Child
-      </button>
-      {showModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-[500px]">
-            <h2 className="text-xl font-semibold mb-4">Add Child</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Child's Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newChild?.name}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Parent's Name
-                </label>
-                <input
-                  type="text"
-                  name="parent.name"
-                  value={newChild?.parent?.name}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Parent's Email
-                </label>
-                <input
-                  type="email"
-                  name="parent.email"
-                  value={newChild?.parent?.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Parent's Phone
-                </label>
-                <input
-                  type="text"
-                  name="parent.phone"
-                  value={newChild?.parent?.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Selected Service
-                </label>
-                <input
-                  type="text"
-                  name="selectedService"
-                  value={newChild?.selectedService}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Selected Time
-                </label>
-                <input
-                  type="text"
-                  name="selectedTime"
-                  value={newChild?.selectedTime}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Selected Date
-                </label>
-                <input
-                  type="text"
-                  name="selectedDate"
-                  value={newChild?.selectedDate}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                >
-                  Add Child
-                </button>
-              </div>
-            </form>
-          </div>
+    <div className="p-6">
+      <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold">Manage Childrens</h1>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => setShowModal(true)}
+          >
+            Add Child
+          </button>
         </div>
-      )}
-      <div className="overflow-x-auto shadow-md rounded-lg bg-white mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {childrens.length === 0 ? (
+            <div className="col-span-full text-center py-4 text-gray-500">
+              No childrens found!
+            </div>
+          ) : (
+            childrens.map((child) => (
+              <div
+                key={child?._id}
+                className="bg-white rounded-lg shadow-md w-full overflow-hidden cursor-pointer"
+                onClick={() => navigate(`/manage-childrens/${child?._id}`)}
+              >
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg font-semibold">
+                      {child?.basicInfo?.childFullName
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)}
+                    </div>
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {child?.basicInfo?.childFullName}
+                    </h2>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div>
+                      <div className="text-sm text-gray-500">Phone</div>
+                      <div className="font-semibold">
+                        {child?.basicInfo?.phoneNumber}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Email</div>
+                      <div className="font-semibold">
+                        {child?.basicInfo?.email}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 text-right">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(child?._id, child?.name);
+                      }}
+                      className="bg-pink-100 w-20 rounded-lg text-pink-800 hover:text-red-700 transition duration-150"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        {showModal && (
+          <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg w-[500px]">
+              <h2 className="text-xl font-semibold mb-4">Add Child</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Child's Name
+                  </label>
+                  <input
+                    type="text"
+                    name="basicInfo.childFullName"
+                    value={newChild?.basicInfo?.childFullName}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Parent's Name
+                  </label>
+                  <input
+                    type="text"
+                    name="basicInfo.parentGuardianName"
+                    value={newChild?.basicInfo?.parentGuardianName}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Parent's Email
+                  </label>
+                  <input
+                    type="email"
+                    name="basicInfo.email"
+                    value={newChild?.basicInfo?.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Parent's Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="basicInfo.phoneNumber"
+                    value={newChild?.basicInfo?.phoneNumber}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Selected Service
+                  </label>
+                  <input
+                    type="text"
+                    name="selectedService"
+                    value={newChild?.selectedService}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Selected Time
+                  </label>
+                  <input
+                    type="text"
+                    name="selectedTime"
+                    value={newChild?.selectedTime}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Selected Date
+                  </label>
+                  <input
+                    type="text"
+                    name="selectedDate"
+                    value={newChild?.selectedDate}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Add Child
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+        {/* <div className="overflow-x-auto shadow-md rounded-lg bg-white mt-12">
         <table className="table-auto w-full text-left border-collapse">
           <thead>
             <tr className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
@@ -257,14 +313,14 @@ const ManageChild = () => {
             )}
             {childrens.map((child) => (
               <tr
-                key={child._id}
+                key={child?._id}
                 className="bg-white border-b hover:bg-gray-50 transition duration-150 cursor-pointer"
-                onClick={() => navigate(`/manage-child/${child._id}`)}
+                onClick={() => navigate(`/manage-child/${child?._id}`)}
               >
                 <td className="px-6 py-4">
                   <img
                     src={`https://ui-avatars.com/api/?name=${child.name}`}
-                    alt={`${child.basicInfo.childFullName} profile`}
+                    alt={`${child.name} profile`}
                     className="h-12 w-12 rounded-full border-2 border-gray-300 shadow-sm"
                   />
                 </td>
@@ -282,7 +338,7 @@ const ManageChild = () => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    onClick={() => handleDelete(child._id, child?.basicInfo?.childFullName)}
+                    onClick={() => handleDelete(child._id, child.name)}
                     className="text-red-500 hover:text-red-700 transition duration-150"
                   >
                     <RiDeleteBin6Line size={24} />
@@ -292,6 +348,7 @@ const ManageChild = () => {
             ))}
           </tbody>
         </table>
+      </div> */}
       </div>
     </div>
   );

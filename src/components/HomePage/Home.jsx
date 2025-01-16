@@ -17,7 +17,10 @@ const Home = () => {
         <div>
           <Sidebar />
         </div>
-        <div style={{ width: "100%" }} className="bg-gray-100">
+        <div
+          style={{ width: "100%", paddingLeft: "16rem" }}
+          className="bg-gray-100 h-screen"
+        >
           <Routes>
             <Route path="/admin-profile" element={<AdminProfile />} />
             <Route path="/manage-parents" element={<ManageParents />} />

@@ -1,33 +1,33 @@
 import axios from "axios";
 import { Check, Pencil } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const ProvidersView = () => {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [editedProvider, setEditedProvider] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [provider, setProvider] = useState({
-    name: "Dr. Sarah Wilson",
-    image: "/placeholder.svg",
-    phone: "1234567890",
-    email: "sarah.wilson@example.com",
-    address: "123 Healthcare Ave",
-    city: "Medical City",
-    state: "MC",
-    pincode: "12345",
-    country: "Hyd",
-    verified: false,
-    bio: "Specialized in pediatric therapy with over 10 years of experience.",
-    services: ["Autism Therapy", "Speech Therapy", "Occupational Therapy"],
-    languages: ["English", "Tamil", "Telugu"],
-    stats: {
-      earnings: "₹15,750",
-      customers: 45,
-      sessions: 128,
-    },
-  });
-
+  const [provider, setProvider] = useState(null);
+  // {
+  //   name: "Dr. Sarah Wilson",
+  //   image: "/placeholder.svg",
+  //   phone: "1234567890",
+  //   email: "sarah.wilson@example.com",
+  //   address: "123 Healthcare Ave",
+  //   city: "Medical City",
+  //   state: "MC",
+  //   pincode: "12345",
+  //   country: "Hyd",
+  //   verified: false,
+  //   bio: "Specialized in pediatric therapy with over 10 years of experience.",
+  //   services: ["Autism Therapy", "Speech Therapy", "Occupational Therapy"],
+  //   languages: ["English", "Tamil", "Telugu"],
+  //   stats: {
+  //     earnings: "₹15,750",
+  //     customers: 45,
+  //     sessions: 128,
+  //   },
+  // }
   const customers = [
     {
       id: 1,
@@ -69,7 +69,7 @@ const ProvidersView = () => {
 
   async function approveProvider(id) {
     try {
-      await axios.post(
+      await axios.patch(
         `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`
       );
       setProvider((prev) => ({ ...prev, verified: true }));
@@ -84,6 +84,7 @@ const ProvidersView = () => {
   };
 
   const handleUpdate = async () => {
+    console.log("edited-provider", editedProvider);
     try {
       await axios.put(
         `${import.meta.env.VITE_WEBSITE}/manage-providers/${id}`,
@@ -111,7 +112,7 @@ const ProvidersView = () => {
           <div className="px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-bold">Provider Details</h2>
             <div className="flex gap-2">
-              {!provider.verified && (
+              {!provider?.verified && (
                 <button
                   onClick={() => approveProvider(provider._id)}
                   className="inline-flex items-center px-3 py-1.5 bg-[#0d9488] text-white rounded-md text-sm font-medium"
