@@ -1,47 +1,41 @@
-import { useEffect, useRef, useState } from "react";
 import {
-  FaChartBar,
-  FaChevronLeft,
-  FaChevronRight,
-  FaChild,
-  FaHandsHelping,
-  FaTools,
-  FaUser,
-  FaUsers,
-} from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
-import { IoIosSettings } from "react-icons/io";
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  Star,
+  User,
+} from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setAdminLogout } from "../../store/AdminSlice";
 import AddAdminModel from "./AddAdminModel";
+
 const Sidebar = () => {
-  const [isClose, setIsClose] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const adminDetails = useSelector((state) => state.admin);
+  const [isClose, setIsClose] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const settingsRef = useRef(null);
+
   const menuItems = [
-    { name: "Manage Parents", path: "/manage-parents", icon: <FaUsers /> },
-    { name: "Manage Child Profiles", path: "/manage-child", icon: <FaChild /> },
-    { name: "Manage Services", path: "/manage-services", icon: <FaTools /> },
-    {
-      name: "Analytics & Reports",
-      path: "/analytics-reports",
-      icon: <FaChartBar />,
-    },
-    {
-      name: "Manage Providers",
-      path: "/manage-providers",
-      icon: <FaHandsHelping />,
-    },
+    { icon: LayoutDashboard, label: "Manage Parents", path: "/manage-parents" },
+    { icon: User, label: "Manage Child Profiles", path: "/manage-child" },
+    { icon: Heart, label: "Manage Services", path: "/manage-services" },
+    { icon: Star, label: "Analytics & Reports", path: "/analytics-reports" },
+    { icon: Calendar, label: "Manage Providers", path: "/manage-providers" },
   ];
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (settingsRef.current && !settingsRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsSettingsOpen(false);
       }
     };
 
@@ -50,90 +44,94 @@ const Sidebar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <div
       className={`flex flex-col ${
         isClose ? "w-20" : "w-64"
-      } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
+      } h-screen bg-white border-r shadow-lg transition-all duration-300 overflow-y-auto`}
     >
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-6 border-b">
         {!isClose && (
-          <div className="flex items-center space-x-2">
-            {/* <div className="h-10 w-10 bg-gray-300 rounded-full"></div> */}
-            <div>
-              <h2 className="text-2xl font-bold">Ausum Kids</h2>
-              <p className="text-xl font-semibold text-gray-500">
-                {"Logged in as "}
-                {adminDetails.firstName || adminDetails.email}
-              </p>
-            </div>
+          <div>
+            <h2 className="text-2xl font-bold">Ausum Kids</h2>
+            <p className="text-sm text-gray-500">
+              {`Logged in as ${adminDetails.firstName || adminDetails.email}`}
+            </p>
           </div>
         )}
         <button
-          className="p-2 rounded-md hover:bg-gray-200"
+          className="p-2 rounded-md hover:bg-gray-100"
           onClick={() => setIsClose(!isClose)}
         >
-          {isClose ? <FaChevronRight /> : <FaChevronLeft />}
+          {isClose ? <ChevronRight /> : <ChevronLeft />}
         </button>
       </div>
 
-      <div className="flex flex-col p-4 space-y-6 overflow-y-auto">
-        {menuItems.map((item, index) => (
-          <Link key={index} to={item.path} className="cursor-pointer">
-            <div className="flex items-center space-x-4 text-pink-700 hover:bg-gray-200 p-2 rounded-md ">
-              <span className="text-lg">{item.icon}</span>
-              {!isClose && <span>{item.name}</span>}
-            </div>
-          </Link>
-        ))}
+      <div className="flex-1 py-4 px-3">
+        <ul className="space-y-1">
+          {menuItems.map((item) => (
+            <li key={item.label}>
+              <button
+                className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100`}
+                onClick={() => handleNavigation(item.path)}
+              >
+                <item.icon className="w-4 h-4" />
+                {!isClose && <span>{item.label}</span>}
+              </button>
+            </li>
+          ))}
+
+          <li>
+            <button
+              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            >
+              <Settings className="w-4 h-4" />
+              {!isClose && <span>Settings</span>}
+            </button>
+            {isSettingsOpen && (
+              <ul className="mt-1 ml-6 space-y-1">
+                <li>
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
+                    onClick={() => handleNavigation("/admin-profile")}
+                  >
+                    <User className="w-4 h-4" />
+                    {!isClose && <span>Profile</span>}
+                  </button>
+                </li>
+                {adminDetails.isSuperAdmin && (
+                  <li>
+                    <button
+                      className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      <span>Add Admin</span>
+                    </button>
+                  </li>
+                )}
+              </ul>
+            )}
+          </li>
+        </ul>
       </div>
 
-      <div className="mt-auto p-4 border-t flex items-center justify-between relative">
-        {!isClose && (
-          <div ref={settingsRef}>
-            <button
-              className="flex items-center space-x-4 hover:bg-gray-200 p-2 rounded-md "
-              onClick={() => setIsOpen((prev) => !prev)}
-            >
-              <IoIosSettings className="text-lg mr-2" />
-              Settings
-            </button>
-
-            {isOpen && (
-              <div className="absolute bottom-14 right-14 bg-white shadow-md border rounded-md w-40 z-50">
-                <button
-                  className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => {
-                    setIsOpen(false);
-                    navigate("/admin-profile");
-                  }}
-                >
-                  Profile <FaUser className="mt-1 ml-2" />
-                </button>
-                {adminDetails.isSuperAdmin && (
-                  <button
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    onClick={() => {
-                      setIsOpen(false);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    Add Admin
-                  </button>
-                )}
-                <button
-                  className="flex w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => {
-                    dispatch(setAdminLogout());
-                    window.location.href = "http://localhost:3000";
-                  }}
-                >
-                  Log Out <FiLogOut className="mt-1 ml-2" />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+      <div className="border-t p-4">
+        <button
+          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50"
+          onClick={() => {
+            dispatch(setAdminLogout());
+            window.location.href = "/";
+          }}
+        >
+          <LogOut className="w-4 h-4" />
+          {!isClose && <span>Logout</span>}
+        </button>
       </div>
 
       <AddAdminModel

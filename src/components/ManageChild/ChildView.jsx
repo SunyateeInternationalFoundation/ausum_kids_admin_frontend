@@ -23,7 +23,7 @@ const ChildView = () => {
     };
     fetchChildDetails();
   }, [id]);
-  console.log("child", child);
+  
   async function approveChild(id) {
     try {
       await axios.post(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
@@ -85,7 +85,7 @@ const ChildView = () => {
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="name"
-                  value={editedChild.name}
+                  value={editedChild.basicInfo?.childFullName}
                   onChange={handleChange}
                   placeholder="Child Name"
                 />
@@ -142,22 +142,22 @@ const ChildView = () => {
             ) : (
               <>
                 <p className="text-gray-600">
-                  <strong>Child Name:</strong> {child.name}
+                  <strong>Child Name:</strong> {child.basicInfo.childFullName}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child?.parent?.name}
+                  <strong>Parent's Name:</strong> {child?.basicInfo?.parentGuardianName}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child?.parent?.address}
+                  <strong>Address:</strong> {child?.parent?.address || "Hyderbad"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child?.parent?.email}
+                  <strong>Parent's Email:</strong> {child?.basicInfo?.email}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child?.parent?.city}
+                  <strong>City:</strong> {child?.parent?.city || "Andhra"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child?.parent?.phone}
+                  <strong>Parent's Phone:</strong> {child?.basicInfo?.primaryPhone}
                 </p>
                 <p className="text-gray-600">
                   <strong>Pincode:</strong> {child?.parent?.pincode}

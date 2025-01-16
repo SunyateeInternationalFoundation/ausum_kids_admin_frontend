@@ -30,6 +30,7 @@ const ManageChild = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_WEBSITE}/manage-child`
         );
+        console.log(response.data.data)
         setChildrens(response.data.data);
       } catch (error) {
         console.error("Error fetching children:", error);
@@ -263,25 +264,25 @@ const ManageChild = () => {
                 <td className="px-6 py-4">
                   <img
                     src={`https://ui-avatars.com/api/?name=${child.name}`}
-                    alt={`${child.name} profile`}
+                    alt={`${child.basicInfo.childFullName} profile`}
                     className="h-12 w-12 rounded-full border-2 border-gray-300 shadow-sm"
                   />
                 </td>
                 <td className="px-6 py-4 text-gray-700 font-medium">
-                  {child?.name}
+                  {child?.basicInfo?.childFullName}
                 </td>
                 <td className="px-6 py-4 text-gray-600">
-                  {child?.parent?.name}
+                  {child?.basicInfo?.parentGuardianName}
                 </td>
                 <td className="px-6 py-4 text-gray-600">
-                  {child?.parent?.phone}
+                  {child?.basicInfo?.primaryPhone}
                 </td>
                 <td
                   className="px-6 py-4 text-center"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    onClick={() => handleDelete(child._id, child.name)}
+                    onClick={() => handleDelete(child._id, child?.basicInfo?.childFullName)}
                     className="text-red-500 hover:text-red-700 transition duration-150"
                   >
                     <RiDeleteBin6Line size={24} />
