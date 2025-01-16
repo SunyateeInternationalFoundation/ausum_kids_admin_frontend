@@ -54,7 +54,7 @@ const Sidebar = () => {
     <div
       className={`flex flex-col ${
         isClose ? "w-20" : "w-64"
-      } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
+      } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto fixed left-0 top-0`}
     >
       <div className="flex items-center justify-between p-4 border-b">
         {!isClose && (
