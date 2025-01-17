@@ -65,7 +65,7 @@ const ParentsView = () => {
   };
   console.log("parent>>>>", parent);
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6 ml-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
           <div className="px-6 py-4 flex items-center justify-between">

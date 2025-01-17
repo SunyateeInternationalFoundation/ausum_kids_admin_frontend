@@ -90,7 +90,7 @@ const ChildView = () => {
   if (!child) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto p-4 overflow-y-auto">
+    <div className="container mx-auto p-4 ml-8 overflow-y-auto">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* First Row - First Column */}
         <div className="col-span-3 bg-white rounded-lg border shadow-sm overflow-hidden">
@@ -287,13 +287,13 @@ const ChildView = () => {
                   <h4 className="font-semibold">Primary Contact</h4>
                   <p>Name: {child?.basicInfo?.primaryContactName}</p>
                   <p>Phone: {child?.basicInfo?.phoneNumber}</p>
-                  <p>Relationship: {child?.basicInfo.primaryRelationship}</p>
+                  <p>Relationship: {child?.basicInfo?.primaryRelationship}</p>
                 </div>
                 <div>
                   <h4 className="font-semibold">Secondary Contact</h4>
-                  <p>Name: {child?.basicInfo.secondaryContactName}</p>
-                  <p>Phone: {child?.basicInfo.secondaryPhone}</p>
-                  <p>Relationship: {child?.basicInfo.secondaryRelationship}</p>
+                  <p>Name: {child?.basicInfo?.secondaryContactName}</p>
+                  <p>Phone: {child?.basicInfo?.secondaryPhone}</p>
+                  <p>Relationship: {child?.basicInfo?.secondaryRelationship}</p>
                 </div>
               </div>
             </div>
@@ -313,23 +313,23 @@ const ChildView = () => {
             </p>
             <p>
               <span className="font-semibold">Diagnosing Specialist:</span>{" "}
-              {child?.extraDetails?.medicalInfo.diagnosingSpecialist}
+              {child?.extraDetails?.medicalInfo?.diagnosingSpecialist}
             </p>
             <p>
               <span className="font-semibold">Co-occurring Conditions:</span>{" "}
-              {child?.extraDetails?.medicalInfo.coOccurringConditions}
+              {child?.extraDetails?.medicalInfo?.coOccurringConditions}
             </p>
             <p>
               <span className="font-semibold">Allergies:</span>{" "}
-              {child?.extraDetails?.medicalInfo.allergies}
+              {child?.extraDetails?.medicalInfo?.allergies}
             </p>
             <p>
               <span className="font-semibold">Medications:</span>{" "}
-              {child?.extraDetails?.medicalInfo.medications}
+              {child?.extraDetails?.medicalInfo?.medications}
             </p>
             <p>
               <span className="font-semibold">Additional Notes:</span>{" "}
-              {child?.extraDetails?.medicalInfo.additionalNotes || "NA"}
+              {child?.extraDetails?.medicalInfo?.additionalNotes || "NA"}
             </p>
           </div>
         </div>
@@ -340,27 +340,27 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">Communication Skills:</span>{" "}
-              {child.extraDetails?.behavioralInfo.communicationSkills}
+              {child.extraDetails?.behavioralInfo?.communicationSkills}
             </p>
             <p>
               <span className="font-semibold">Communication Details:</span>{" "}
-              {child.extraDetails?.behavioralInfo.communicationDetails}
+              {child.extraDetails?.behavioralInfo?.communicationDetails}
             </p>
             <p>
               <span className="font-semibold">Social Interaction:</span>{" "}
-              {child.extraDetails?.behavioralInfo.socialInteraction}
+              {child.extraDetails?.behavioralInfo?.socialInteraction}
             </p>
             <p>
               <span className="font-semibold">Social Interaction Details:</span>{" "}
-              {child.extraDetails?.behavioralInfo.socialInteractionDetails}
+              {child.extraDetails?.behavioralInfo?.socialInteractionDetails}
             </p>
             <p>
               <span className="font-semibold">Sensory Preferences:</span>{" "}
-              {child.extraDetails?.behavioralInfo.sensoryPreferences}
+              {child.extraDetails?.behavioralInfo?.sensoryPreferences}
             </p>
             <p>
               <span className="font-semibold">Sensory Details:</span>{" "}
-              {child.extraDetails?.behavioralInfo.sensoryDetails}
+              {child.extraDetails?.behavioralInfo?.sensoryDetails}
             </p>
           </div>
         </div>
@@ -371,27 +371,27 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">School Name:</span>{" "}
-              {child.extraDetails?.therapyHistory.schoolName}
+              {child.extraDetails?.therapyHistory?.schoolName}
             </p>
             <p>
               <span className="font-semibold">Grade Level:</span>{" "}
-              {child.extraDetails?.therapyHistory.gradeLevel}
+              {child.extraDetails?.therapyHistory?.gradeLevel}
             </p>
             <p>
               <span className="font-semibold">Speech Therapy:</span>{" "}
-              {child.extraDetails?.therapyHistory.speechTherapy ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory?.speechTherapy ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">Occupational Therapy:</span>{" "}
-              {child.extraDetails?.therapyHistory.occupationalTherapy ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory?.occupationalTherapy ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">ABA:</span>{" "}
-              {child.extraDetails?.therapyHistory.aba ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory?.aba ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">Additional Therapies:</span>{" "}
-              {child.extraDetails?.therapyHistory.additionalTherapies}
+              {child.extraDetails?.therapyHistory?.additionalTherapies}
             </p>
           </div>
         </div>
@@ -405,47 +405,47 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">Academic Support Goal:</span>{" "}
-              {child.extraDetails.admissionGoal.academicSupportGoal}
+              {child?.extraDetails?.admissionGoal?.academicSupportGoal}
             </p>
             <p>
               <span className="font-semibold">Behavioral Management Goal:</span>{" "}
-              {child.extraDetails.admissionGoal.behavioralManagementGoal}
+              {child?.extraDetails?.admissionGoal?.behavioralManagementGoal}
             </p>
             <p>
               <span className="font-semibold">Communication Goal:</span>{" "}
-              {child.extraDetails.admissionGoal.communicationGoal}
+              {child?.extraDetails?.admissionGoal?.communicationGoal}
             </p>
             <p>
               <span className="font-semibold">Emergency Contact:</span>{" "}
-              {child.extraDetails.admissionGoal.emergencyContactName}
+              {child?.extraDetails?.admissionGoal?.emergencyContactName}
             </p>
             <p>
               <span className="font-semibold">
                 Emergency Contact Relationship:
               </span>{" "}
-              {child.extraDetails.admissionGoal.emergencyContactRelationship}
+              {child?.extraDetails?.admissionGoal?.emergencyContactRelationship}
             </p>
             <p>
               <span className="font-semibold">Parent/Guardian Goals:</span>{" "}
-              {child.extraDetails.admissionGoal.parentGuardianGoals}
+              {child?.extraDetails?.admissionGoal?.parentGuardianGoals}
             </p>
             <p>
               <span className="font-semibold">
                 Preferred Therapy Modalities:
               </span>{" "}
-              {child.extraDetails.admissionGoal.preferredTherapyModalities.join(", ")}
+              {child?.extraDetails?.admissionGoal?.preferredTherapyModalities.join(", ")}
             </p>
             <p>
               <span className="font-semibold">Reason for Admission:</span>{" "}
-              {child.extraDetails.admissionGoal.reasonForAdmission}
+              {child?.extraDetails?.admissionGoal?.reasonForAdmission}
             </p>
             <p>
               <span className="font-semibold">Sensory Integration Goal:</span>{" "}
-              {child.extraDetails.admissionGoal.sensoryIntegrationGoal}
+              {child?.extraDetails?.admissionGoal?.sensoryIntegrationGoal}
             </p>
             <p>
               <span className="font-semibold">Social Skills Goal:</span>{" "}
-              {child.extraDetails.admissionGoal.socialSkillsGoal}
+              {child?.extraDetails?.admissionGoal?.socialSkillsGoal}
             </p>
           </div>
         </div>

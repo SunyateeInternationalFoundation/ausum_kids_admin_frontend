@@ -81,7 +81,7 @@ const ManageProviders = () => {
     }
   };
   return (
-    <div className="p-6">
+    <div className="p-6 ml-6">
       <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Manage Providers</h1>

@@ -5,19 +5,17 @@ import { useNavigate } from "react-router-dom";
 const ManageChild = () => {
   const navigate = useNavigate();
   const [childrens, setChildrens] = useState([]);
+  const [parents, setParents] = useState([]); 
   const [showModal, setShowModal] = useState(false);
   const [newChild, setNewChild] = useState({
-    name: "",
     basicInfo: {
       childFullName: "",
       parentGuardianName: "",
       email: "",
       phoneNumber: "",
     },
-
-    selectedService: "",
-    selectedDate: "",
-    selectedTime: "",
+    diagnosis: "",
+    parentId: "",
   });
 
   useEffect(() => {
@@ -34,10 +32,55 @@ const ManageChild = () => {
     };
     fetchChildrens();
   }, []);
+  
+  useEffect(() => {
+    const fetchParentDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_WEBSITE}/manage-parents`
+        );
+        setParents(response.data.data);
+      } catch (error) {
+        console.error("Error fetching parent details:", error);
+      }
+    };
+    fetchParentDetails();
+  }, []);
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   if (name.startsWith("basicInfo.")) {
+  //     const field = name.split(".")[1];
+  //     setNewChild((prev) => ({
+  //       ...prev,
+  //       basicInfo: {
+  //         ...prev.basicInfo,
+  //         [field]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setNewChild((prev) => ({
+  //       ...prev,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith("basicInfo.")) {
+    if (name === "parentId") {
+      const selectedParent = parents.find((parent) => parent._id === value);
+      setNewChild((prev) => ({
+        ...prev,
+        parentId: value,
+        basicInfo: {
+          ...prev.basicInfo,
+          parentGuardianName: selectedParent.name,
+          email: selectedParent.email,
+          phoneNumber: selectedParent.phone,
+        },
+      }));
+    } else if (name.startsWith("basicInfo.")) {
       const field = name.split(".")[1];
       setNewChild((prev) => ({
         ...prev,
@@ -64,17 +107,14 @@ const ManageChild = () => {
       setChildrens((prev) => [...prev, response.data.data]);
       setShowModal(false);
       setNewChild({
-        name: "",
         basicInfo: {
           childFullName: "",
           parentGuardianName: "",
           email: "",
           phoneNumber: "",
         },
-
-        selectedService: "",
-        selectedDate: "",
-        selectedTime: "",
+        diagnosis: "",
+        parentId: "",
       });
     } catch (error) {
       console.error("Error adding child:", error);
@@ -97,7 +137,7 @@ const ManageChild = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 ml-6">
       <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Manage Childrens</h1>
@@ -186,12 +226,12 @@ const ManageChild = () => {
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Parent's Name
+                    Child's DOB
                   </label>
                   <input
-                    type="text"
-                    name="basicInfo.parentGuardianName"
-                    value={newChild?.basicInfo?.parentGuardianName}
+                    type="date"
+                    name="basicInfo.dateOfBirth"
+                    value={newChild?.basicInfo?.dateOfBirth}
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                     required
@@ -199,68 +239,37 @@ const ManageChild = () => {
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Parent's Email
-                  </label>
-                  <input
-                    type="email"
-                    name="basicInfo.email"
-                    value={newChild?.basicInfo?.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Parent's Phone
-                  </label>
-                  <input
+                    Child's Diagnosing
+                    </label>
+                    <input
                     type="text"
-                    name="basicInfo.phoneNumber"
-                    value={newChild?.basicInfo?.phoneNumber}
+                    name="diognose"
+                    value={newChild?.diognose}
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                     required
                   />
-                </div>
-                <div className="mb-2">
+                 </div>
+                 <div className="mb-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Selected Service
+                    Select Parent
                   </label>
-                  <input
-                    type="text"
-                    name="selectedService"
-                    value={newChild?.selectedService}
+                  <select
+                    name="parentId"
+                    value={newChild.parentId}
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                     required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Selected Time
-                  </label>
-                  <input
-                    type="text"
-                    name="selectedTime"
-                    value={newChild?.selectedTime}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Selected Date
-                  </label>
-                  <input
-                    type="text"
-                    name="selectedDate"
-                    value={newChild?.selectedDate}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  />
+                  >
+                    <option value="" disabled>
+                      Select a Parent
+                    </option>
+                    {parents.map((parent) => (
+                      <option key={parent._id} value={parent._id}>
+                        {parent.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex justify-between">
                   <button

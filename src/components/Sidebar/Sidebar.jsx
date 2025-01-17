@@ -28,7 +28,7 @@ const Sidebar = () => {
     { icon: LayoutDashboard, label: "Manage Parents", path: "/manage-parents" },
     { icon: User, label: "Manage Child Profiles", path: "/manage-child" },
     { icon: Heart, label: "Manage Services", path: "/manage-services" },
-    { icon: Star, label: "Analytics & Reports", path: "/analytics-reports" },
+    // { icon: Star, label: "Analytics & Reports", path: "/analytics-reports" },
     { icon: Calendar, label: "Manage Providers", path: "/manage-providers" },
   ];
 
@@ -52,25 +52,33 @@ const Sidebar = () => {
   return (
     <div
   className={`flex flex-col ${
-    isClose ? "w-28" : "w-72"
+    isClose ? "w-28" : "w-58"
   } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
 >
-  <div className="flex items-center justify-between px-6 py-4 border-b">
-    {!isClose && (
-      <div className="text-left">
-        <h2 className="text-2xl font-bold">Ausum Kids</h2>
-        <p className="text-sm text-gray-500">
-          {`Logged in as ${adminDetails.firstName || adminDetails.email}`}
-        </p>
+<div className="flex flex-col items-center px-6 py-4 ">
+        <img
+          src="https://ausumkids.com/wp-content/uploads/2024/08/Untitled-design-6-e1723961711858.png"
+          alt="Ausum Kids Logo"
+          className="w-20 h-20" // Adjust size as needed
+        />
       </div>
-    )}
-    <button
-      className="p-2 rounded-md hover:bg-gray-100"
-      onClick={() => setIsClose(!isClose)}
-    >
-      {isClose ? <ChevronRight /> : <ChevronLeft />}
-    </button>
-  </div>
+
+      <div className="flex items-center justify-between px-6 py-2 border-b">
+        {!isClose && (
+          <div className="text-left">
+            <h2 className="text-2xl font-bold">Ausum Kids</h2>
+            <p className="text-sm text-gray-500">
+              {`Logged in as ${adminDetails.firstName || adminDetails.email}`}
+            </p>
+          </div>
+        )}
+        <button
+          className="p-2 rounded-md hover:bg-gray-100"
+          onClick={() => setIsClose(!isClose)}
+        >
+          {isClose ? <ChevronRight /> : <ChevronLeft />}
+        </button>
+      </div>
 
   <div className="flex-1 py-6 px-5">
     <ul className="space-y-3">
