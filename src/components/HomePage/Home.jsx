@@ -18,7 +18,7 @@ const Home = () => {
           <Sidebar />
         </div>
         <div
-          style={{ width: "100%", paddingLeft: "16rem" }}
+          style={{ width: "100%", paddingLeft: "5rem" }}
           className="bg-gray-100 h-screen"
         >
           <Routes>

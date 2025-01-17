@@ -2,82 +2,82 @@ import axios from "axios";
 import { Check, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const previewData = {
-  id: "1",
-  name: "John Doe",
-  image: "/placeholder.svg",
-  dateOfBirth: "2018-05-15",
-  gender: "Male",
-  phone: "(555) 123-4567",
-  email: "john@example.com",
-  address: "123 Main St, City, State",
-  verified: false,
-  parent: {
-    name: "Jane Doe",
-    phone: "(555) 987-6543",
-    email: "jane@example.com",
-    id: "p1",
-  },
-  preferredLanguage: "English",
-  primaryContact: {
-    name: "Jane Doe",
-    phone: "(555) 987-6543",
-    relationship: "Mother",
-  },
-  secondaryContact: {
-    name: "Bob Smith",
-    phone: "(555) 246-8135",
-    relationship: "Uncle",
-  },
-  medicalInfo: {
-    dateOfDiagnosis: "2022-03-10",
-    diagnosingSpecialist: "Dr. Smith",
-    coOccurringConditions: "ADHD",
-    allergies: "Peanuts",
-    medications: "None",
-    additionalNotes: "Regular check-ups required",
-  },
-  behavioralInfo: {
-    communicationSkills: "Moderate",
-    communicationDetails: "Uses simple sentences",
-    socialInteraction: "Good",
-    socialInteractionDetails: "Plays well with others",
-    sensoryPreferences: "Sensitive to loud sounds",
-    sensoryDetails: "Needs quiet environment",
-  },
-  therapyHistory: {
-    schoolName: "Springfield Elementary",
-    gradeLevel: "2nd Grade",
-    speechTherapy: true,
-    occupationalTherapy: true,
-    aba: false,
-    additionalTherapies: "Music therapy",
-  },
-  admissionGoal: {
-    academicSupportGoal: "Improve reading skills",
-    behavioralManagementGoal: "Better focus in class",
-    communicationGoal: "Complex sentence formation",
-    emergencyContactName: "Jane Doe",
-    emergencyContactRelationship: "Mother",
-    parentGuardianGoals: "Independence in daily activities",
-    preferredTherapyModalities: ["Speech", "OT"],
-    reasonForAdmission: "Development support",
-    sensoryIntegrationGoal: "Better sound tolerance",
-    socialSkillsGoal: "Group participation",
-  },
-  selectedServices: [
-    {
-      serviceName: "Speech Therapy",
-      startDate: "2023-01-15",
-      status: "Active",
-    },
-    {
-      serviceName: "Occupational Therapy",
-      startDate: "2023-02-01",
-      status: "Active",
-    },
-  ],
-};
+// const previewData = {
+//   id: "1",
+//   name: "John Doe",
+//   image: "/placeholder.svg",
+//   dateOfBirth: "2018-05-15",
+//   gender: "Male",
+//   phone: "(555) 123-4567",
+//   email: "john@example.com",
+//   address: "123 Main St, City, State",
+//   verified: false,
+//   parent: {
+//     name: "Jane Doe",
+//     phone: "(555) 987-6543",
+//     email: "jane@example.com",
+//     id: "p1",
+//   },
+//   preferredLanguage: "English",
+//   primaryContact: {
+//     name: "Jane Doe",
+//     phone: "(555) 987-6543",
+//     relationship: "Mother",
+//   },
+//   secondaryContact: {
+//     name: "Bob Smith",
+//     phone: "(555) 246-8135",
+//     relationship: "Uncle",
+//   },
+//   medicalInfo: {
+//     dateOfDiagnosis: "2022-03-10",
+//     diagnosingSpecialist: "Dr. Smith",
+//     coOccurringConditions: "ADHD",
+//     allergies: "Peanuts",
+//     medications: "None",
+//     additionalNotes: "Regular check-ups required",
+//   },
+//   behavioralInfo: {
+//     communicationSkills: "Moderate",
+//     communicationDetails: "Uses simple sentences",
+//     socialInteraction: "Good",
+//     socialInteractionDetails: "Plays well with others",
+//     sensoryPreferences: "Sensitive to loud sounds",
+//     sensoryDetails: "Needs quiet environment",
+//   },
+//   therapyHistory: {
+//     schoolName: "Springfield Elementary",
+//     gradeLevel: "2nd Grade",
+//     speechTherapy: true,
+//     occupationalTherapy: true,
+//     aba: false,
+//     additionalTherapies: "Music therapy",
+//   },
+//   admissionGoal: {
+//     academicSupportGoal: "Improve reading skills",
+//     behavioralManagementGoal: "Better focus in class",
+//     communicationGoal: "Complex sentence formation",
+//     emergencyContactName: "Jane Doe",
+//     emergencyContactRelationship: "Mother",
+//     parentGuardianGoals: "Independence in daily activities",
+//     preferredTherapyModalities: ["Speech", "OT"],
+//     reasonForAdmission: "Development support",
+//     sensoryIntegrationGoal: "Better sound tolerance",
+//     socialSkillsGoal: "Group participation",
+//   },
+//   selectedServices: [
+//     {
+//       serviceName: "Speech Therapy",
+//       startDate: "2023-01-15",
+//       status: "Active",
+//     },
+//     {
+//       serviceName: "Occupational Therapy",
+//       startDate: "2023-02-01",
+//       status: "Active",
+//     },
+//   ],
+// };
 const ChildView = () => {
   const { id } = useParams();
   const [child, setChild] = useState(null);
@@ -100,7 +100,7 @@ const ChildView = () => {
       }
     };
     fetchChildDetails();
-  }, [id]);
+  }, []);
   
   async function approveChild(id) {
     try {
@@ -300,7 +300,7 @@ const ChildView = () => {
                 {child.selectedService}
               </span>
             </h2>
-            {editMode ? (
+            {editMode && (
               <div>
                 <button
                   // onClick={handleUpdate}

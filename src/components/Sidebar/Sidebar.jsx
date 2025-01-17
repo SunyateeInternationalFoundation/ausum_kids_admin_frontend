@@ -51,94 +51,95 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`flex flex-col ${
-        isClose ? "w-20" : "w-64"
-      } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
-    >
-      <div className="flex items-center justify-between p-6 border-b">
-        {!isClose && (
-          <div>
-            <h2 className="text-2xl font-bold">Ausum Kids</h2>
-            <p className="text-sm text-gray-500">
-              {`Logged in as ${adminDetails.firstName || adminDetails.email}`}
-            </p>
-          </div>
-        )}
-        <button
-          className="p-2 rounded-md hover:bg-gray-100"
-          onClick={() => setIsClose(!isClose)}
-        >
-          {isClose ? <ChevronRight /> : <ChevronLeft />}
-        </button>
+  className={`flex flex-col ${
+    isClose ? "w-28" : "w-72"
+  } h-screen bg-white transition-all duration-300 shadow-lg overflow-y-auto`}
+>
+  <div className="flex items-center justify-between px-6 py-4 border-b">
+    {!isClose && (
+      <div className="text-left">
+        <h2 className="text-2xl font-bold">Ausum Kids</h2>
+        <p className="text-sm text-gray-500">
+          {`Logged in as ${adminDetails.firstName || adminDetails.email}`}
+        </p>
       </div>
+    )}
+    <button
+      className="p-2 rounded-md hover:bg-gray-100"
+      onClick={() => setIsClose(!isClose)}
+    >
+      {isClose ? <ChevronRight /> : <ChevronLeft />}
+    </button>
+  </div>
 
-      <div className="flex-1 py-4 px-3">
-        <ul className="space-y-1">
-          {menuItems.map((item) => (
-            <li key={item.label}>
+  <div className="flex-1 py-6 px-5">
+    <ul className="space-y-3">
+      {menuItems.map((item) => (
+        <li key={item.label}>
+          <button
+            className={`w-full flex items-center gap-4 px-5 py-3 rounded-lg text-lg text-gray-600 hover:bg-gray-100`}
+            onClick={() => handleNavigation(item.path)}
+          >
+            <item.icon className="w-6 h-6" />
+            {!isClose && <span className="truncate">{item.label}</span>}
+          </button>
+        </li>
+      ))}
+
+      <li>
+        <button
+          className="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-lg text-gray-600 hover:bg-gray-100"
+          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+        >
+          <Settings className="w-6 h-6" />
+          {!isClose && <span>Settings</span>}
+        </button>
+        {isSettingsOpen && (
+          <ul className="mt-2 ml-8 space-y-2">
+            <li>
               <button
-                className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100`}
-                onClick={() => handleNavigation(item.path)}
+                className="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-lg text-gray-600 hover:bg-gray-100"
+                onClick={() => handleNavigation("/admin-profile")}
               >
-                <item.icon className="w-4 h-4" />
-                {!isClose && <span>{item.label}</span>}
+                <User className="w-5 h-5" />
+                {!isClose && <span>Profile</span>}
               </button>
             </li>
-          ))}
-
-          <li>
-            <button
-              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
-              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            >
-              <Settings className="w-4 h-4" />
-              {!isClose && <span>Settings</span>}
-            </button>
-            {isSettingsOpen && (
-              <ul className="mt-1 ml-6 space-y-1">
-                <li>
-                  <button
-                    className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
-                    onClick={() => handleNavigation("/admin-profile")}
-                  >
-                    <User className="w-4 h-4" />
-                    {!isClose && <span>Profile</span>}
-                  </button>
-                </li>
-                {adminDetails.isSuperAdmin && (
-                  <li>
-                    <button
-                      className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      <span>Add Admin</span>
-                    </button>
-                  </li>
-                )}
-              </ul>
+            {adminDetails.isSuperAdmin && (
+              <li>
+                <button
+                  className="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-lg text-gray-600 hover:bg-gray-100"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <span>Add Admin</span>
+                </button>
+              </li>
             )}
-          </li>
-        </ul>
-      </div>
+          </ul>
+        )}
+      </li>
+    </ul>
+  </div>
 
-      <div className="border-t p-4">
-        <button
-          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50"
-          onClick={() => {
-            dispatch(setAdminLogout());
-            window.location.href = "/";
-          }}
-        >
-          <LogOut className="w-4 h-4" />
-          {!isClose && <span>Logout</span>}
-        </button>
-      </div>
+  <div className="border-t px-5 py-4">
+    <button
+      className="w-full flex items-center gap-4 px-5 py-3 rounded-lg text-lg text-red-500 hover:bg-red-50"
+      onClick={() => {
+        dispatch(setAdminLogout());
+        window.location.href = "/";
+      }}
+    >
+      <LogOut className="w-5 h-5" />
+      {!isClose && <span>Logout</span>}
+    </button>
+  </div>
 
-      <AddAdminModel
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </div>
+  <AddAdminModel
+    isOpen={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+  />
+</div>
+
   );
 };
 

@@ -26,7 +26,6 @@ const ManageChild = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_WEBSITE}/manage-child`
         );
-        console.log("response", response);
         setChildrens(response.data.data);
         console.log("CHILDRENS", childrens);
       } catch (error) {
@@ -119,7 +118,7 @@ const ManageChild = () => {
               <div
                 key={child?._id}
                 className="bg-white rounded-lg shadow-md w-full overflow-hidden cursor-pointer"
-                onClick={() => navigate(`/manage-childrens/${child?._id}`)}
+                onClick={() => navigate(`/manage-child/${child?._id}`)}
               >
                 <div className="p-4">
                   <div className="flex items-center gap-3 mb-6">
