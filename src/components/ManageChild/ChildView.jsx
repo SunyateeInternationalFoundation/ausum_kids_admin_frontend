@@ -217,7 +217,7 @@ const ChildView = () => {
             )}
           </div>
         </div>
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-700">
               Session Details -{" "}
@@ -242,7 +242,7 @@ const ChildView = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* First Row - Second Column */}
         <div className="col-span-2">
