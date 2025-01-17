@@ -2,82 +2,7 @@ import axios from "axios";
 import { Check, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// const previewData = {
-//   id: "1",
-//   name: "John Doe",
-//   image: "/placeholder.svg",
-//   dateOfBirth: "2018-05-15",
-//   gender: "Male",
-//   phone: "(555) 123-4567",
-//   email: "john@example.com",
-//   address: "123 Main St, City, State",
-//   verified: false,
-//   parent: {
-//     name: "Jane Doe",
-//     phone: "(555) 987-6543",
-//     email: "jane@example.com",
-//     id: "p1",
-//   },
-//   preferredLanguage: "English",
-//   primaryContact: {
-//     name: "Jane Doe",
-//     phone: "(555) 987-6543",
-//     relationship: "Mother",
-//   },
-//   secondaryContact: {
-//     name: "Bob Smith",
-//     phone: "(555) 246-8135",
-//     relationship: "Uncle",
-//   },
-//   medicalInfo: {
-//     dateOfDiagnosis: "2022-03-10",
-//     diagnosingSpecialist: "Dr. Smith",
-//     coOccurringConditions: "ADHD",
-//     allergies: "Peanuts",
-//     medications: "None",
-//     additionalNotes: "Regular check-ups required",
-//   },
-//   behavioralInfo: {
-//     communicationSkills: "Moderate",
-//     communicationDetails: "Uses simple sentences",
-//     socialInteraction: "Good",
-//     socialInteractionDetails: "Plays well with others",
-//     sensoryPreferences: "Sensitive to loud sounds",
-//     sensoryDetails: "Needs quiet environment",
-//   },
-//   therapyHistory: {
-//     schoolName: "Springfield Elementary",
-//     gradeLevel: "2nd Grade",
-//     speechTherapy: true,
-//     occupationalTherapy: true,
-//     aba: false,
-//     additionalTherapies: "Music therapy",
-//   },
-//   admissionGoal: {
-//     academicSupportGoal: "Improve reading skills",
-//     behavioralManagementGoal: "Better focus in class",
-//     communicationGoal: "Complex sentence formation",
-//     emergencyContactName: "Jane Doe",
-//     emergencyContactRelationship: "Mother",
-//     parentGuardianGoals: "Independence in daily activities",
-//     preferredTherapyModalities: ["Speech", "OT"],
-//     reasonForAdmission: "Development support",
-//     sensoryIntegrationGoal: "Better sound tolerance",
-//     socialSkillsGoal: "Group participation",
-//   },
-//   selectedServices: [
-//     {
-//       serviceName: "Speech Therapy",
-//       startDate: "2023-01-15",
-//       status: "Active",
-//     },
-//     {
-//       serviceName: "Occupational Therapy",
-//       startDate: "2023-02-01",
-//       status: "Active",
-//     },
-//   ],
-// };
+
 const ChildView = () => {
   const { id } = useParams();
   const [child, setChild] = useState(null);
@@ -196,27 +121,27 @@ const ChildView = () => {
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="name"
-                  value={editedChild.name}
+                  value={editedChild?.basicInfo?.childFullName}
                   onChange={handleChange}
                   placeholder="Child Name"
                 />
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child?.parent?.name}
+                  <strong>Parent's Name:</strong> {child?.basicInfo?.parentGuardianName}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child?.parent?.address}
+                  <strong>Address:</strong> {child?.basicInfo?.address || "Hyderabad"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child?.parent?.email}
+                  <strong>Parent's Email:</strong> {child?.basicInfo?.email}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child?.parent?.city}
+                  <strong>City:</strong> {child?.parent?.city || "Hyderbad"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child?.parent?.phone}
+                  <strong>Parent's Phone:</strong> {child?.basicInfo?.phoneNumber}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child?.parent?.pincode}
+                  <strong>Pincode:</strong> {child?.parent?.pincode || "500012"}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
@@ -231,21 +156,21 @@ const ChildView = () => {
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="selectedDate"
-                  value={editedChild.selectedDate}
+                  value={editedChild?.selectedDate}
                   onChange={handleChange}
                   placeholder="Selected Date"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="selectedTime"
-                  value={editedChild.selectedTime}
+                  value={editedChild?.selectedTime}
                   onChange={handleChange}
                   placeholder="Selected Time"
                 />
                 <textarea
                   className="text-gray-600 border rounded px-2 py-1"
                   name="notes"
-                  value={editedChild.notes}
+                  value={editedChild?.notes}
                   onChange={handleChange}
                   placeholder="Notes"
                 />
@@ -253,40 +178,40 @@ const ChildView = () => {
             ) : (
               <>
                 <p className="text-gray-600">
-                  <strong>Child Name:</strong> {child.name}
+                  <strong>Child Name:</strong> {child?.basicInfo?.childFullName}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child?.parent?.name}
+                  <strong>Parent's Name:</strong> {child?.basicInfo?.name}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child?.parent?.address}
+                  <strong>Address:</strong> {child?.basicInfo?.address}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child?.parent?.email}
+                  <strong>Parent's Email:</strong> {child?.basicInfo?.email}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child?.parent?.city}
+                  <strong>City:</strong> {child?.basicInfo?.city || "Hyderabad"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child?.parent?.phone}
+                  <strong>Parent's Phone:</strong> {child?.basicInfo?.phoneNumber}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child?.parent?.pincode}
+                  <strong>Pincode:</strong> {child?.parent?.pincode || "City"}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Service:</strong> {child.selectedService}
+                  <strong>Selected Service:</strong> {child?.selectedService || "Speech therapy"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Date:</strong> {child.selectedDate}
+                  <strong>Selected Date:</strong> {child?.selectedDate}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Time:</strong> {child.selectedTime}
+                  <strong>Selected Time:</strong> {child?.selectedTime}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Notes:</strong> {child.notes}
+                  <strong>Notes:</strong> {child?.notes}
                 </p>
               </>
             )}
@@ -297,7 +222,7 @@ const ChildView = () => {
             <h2 className="text-xl font-semibold text-gray-700">
               Session Details -{" "}
               <span className="text-gray-500 font-bold">
-                {child.selectedService}
+                {child?.selectedService}
               </span>
             </h2>
             {editMode && (
@@ -336,15 +261,15 @@ const ChildView = () => {
 
             <div className="space-y-3">
               <p>
-                <span className="font-semibold">Name:</span> {child.parent.name}
+                <span className="font-semibold">Name:</span> {child?.basicInfo?.parentGuardianName}
               </p>
               <p>
                 <span className="font-semibold">Phone:</span>{" "}
-                {child.parent.phone}
+                {child?.basicInfo?.phoneNumber}
               </p>
               <p>
                 <span className="font-semibold">Email:</span>{" "}
-                {child.parent.email}
+                {child?.basicInfo?.email}
               </p>
             </div>
           </div>
@@ -354,21 +279,21 @@ const ChildView = () => {
               <div>
                 <p>
                   <span className="font-semibold">Preferred Language:</span>{" "}
-                  {child.preferredLanguage}
+                  {child?.basicInfo?.preferredLanguage}
                 </p>
               </div>
               <div className="flex justify-between">
                 <div>
                   <h4 className="font-semibold">Primary Contact</h4>
-                  <p>Name: {child.primaryContact.name}</p>
-                  <p>Phone: {child.primaryContact.phone}</p>
-                  <p>Relationship: {child.primaryContact.relationship}</p>
+                  <p>Name: {child?.basicInfo?.primaryContactName}</p>
+                  <p>Phone: {child?.basicInfo?.phoneNumber}</p>
+                  <p>Relationship: {child?.basicInfo.primaryRelationship}</p>
                 </div>
                 <div>
                   <h4 className="font-semibold">Secondary Contact</h4>
-                  <p>Name: {child.secondaryContact.name}</p>
-                  <p>Phone: {child.secondaryContact.phone}</p>
-                  <p>Relationship: {child.secondaryContact.relationship}</p>
+                  <p>Name: {child?.basicInfo.secondaryContactName}</p>
+                  <p>Phone: {child?.basicInfo.secondaryPhone}</p>
+                  <p>Relationship: {child?.basicInfo.secondaryRelationship}</p>
                 </div>
               </div>
             </div>
@@ -384,27 +309,27 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">Date of Diagnosis:</span>{" "}
-              {child.medicalInfo.dateOfDiagnosis}
+              {child.extraDetails?.medicalInfo?.dateOfDiagnosis}
             </p>
             <p>
               <span className="font-semibold">Diagnosing Specialist:</span>{" "}
-              {child.medicalInfo.diagnosingSpecialist}
+              {child?.extraDetails?.medicalInfo.diagnosingSpecialist}
             </p>
             <p>
               <span className="font-semibold">Co-occurring Conditions:</span>{" "}
-              {child.medicalInfo.coOccurringConditions}
+              {child?.extraDetails?.medicalInfo.coOccurringConditions}
             </p>
             <p>
               <span className="font-semibold">Allergies:</span>{" "}
-              {child.medicalInfo.allergies}
+              {child?.extraDetails?.medicalInfo.allergies}
             </p>
             <p>
               <span className="font-semibold">Medications:</span>{" "}
-              {child.medicalInfo.medications}
+              {child?.extraDetails?.medicalInfo.medications}
             </p>
             <p>
               <span className="font-semibold">Additional Notes:</span>{" "}
-              {child.medicalInfo.additionalNotes}
+              {child?.extraDetails?.medicalInfo.additionalNotes || "NA"}
             </p>
           </div>
         </div>
@@ -415,27 +340,27 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">Communication Skills:</span>{" "}
-              {child.behavioralInfo.communicationSkills}
+              {child.extraDetails?.behavioralInfo.communicationSkills}
             </p>
             <p>
               <span className="font-semibold">Communication Details:</span>{" "}
-              {child.behavioralInfo.communicationDetails}
+              {child.extraDetails?.behavioralInfo.communicationDetails}
             </p>
             <p>
               <span className="font-semibold">Social Interaction:</span>{" "}
-              {child.behavioralInfo.socialInteraction}
+              {child.extraDetails?.behavioralInfo.socialInteraction}
             </p>
             <p>
               <span className="font-semibold">Social Interaction Details:</span>{" "}
-              {child.behavioralInfo.socialInteractionDetails}
+              {child.extraDetails?.behavioralInfo.socialInteractionDetails}
             </p>
             <p>
               <span className="font-semibold">Sensory Preferences:</span>{" "}
-              {child.behavioralInfo.sensoryPreferences}
+              {child.extraDetails?.behavioralInfo.sensoryPreferences}
             </p>
             <p>
               <span className="font-semibold">Sensory Details:</span>{" "}
-              {child.behavioralInfo.sensoryDetails}
+              {child.extraDetails?.behavioralInfo.sensoryDetails}
             </p>
           </div>
         </div>
@@ -446,27 +371,27 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">School Name:</span>{" "}
-              {child.therapyHistory.schoolName}
+              {child.extraDetails?.therapyHistory.schoolName}
             </p>
             <p>
               <span className="font-semibold">Grade Level:</span>{" "}
-              {child.therapyHistory.gradeLevel}
+              {child.extraDetails?.therapyHistory.gradeLevel}
             </p>
             <p>
               <span className="font-semibold">Speech Therapy:</span>{" "}
-              {child.therapyHistory.speechTherapy ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory.speechTherapy ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">Occupational Therapy:</span>{" "}
-              {child.therapyHistory.occupationalTherapy ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory.occupationalTherapy ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">ABA:</span>{" "}
-              {child.therapyHistory.aba ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory.aba ? "Yes" : "No"}
             </p>
             <p>
               <span className="font-semibold">Additional Therapies:</span>{" "}
-              {child.therapyHistory.additionalTherapies}
+              {child.extraDetails?.therapyHistory.additionalTherapies}
             </p>
           </div>
         </div>
@@ -480,47 +405,47 @@ const ChildView = () => {
           <div className="space-y-2">
             <p>
               <span className="font-semibold">Academic Support Goal:</span>{" "}
-              {child.admissionGoal.academicSupportGoal}
+              {child.extraDetails.admissionGoal.academicSupportGoal}
             </p>
             <p>
               <span className="font-semibold">Behavioral Management Goal:</span>{" "}
-              {child.admissionGoal.behavioralManagementGoal}
+              {child.extraDetails.admissionGoal.behavioralManagementGoal}
             </p>
             <p>
               <span className="font-semibold">Communication Goal:</span>{" "}
-              {child.admissionGoal.communicationGoal}
+              {child.extraDetails.admissionGoal.communicationGoal}
             </p>
             <p>
               <span className="font-semibold">Emergency Contact:</span>{" "}
-              {child.admissionGoal.emergencyContactName}
+              {child.extraDetails.admissionGoal.emergencyContactName}
             </p>
             <p>
               <span className="font-semibold">
                 Emergency Contact Relationship:
               </span>{" "}
-              {child.admissionGoal.emergencyContactRelationship}
+              {child.extraDetails.admissionGoal.emergencyContactRelationship}
             </p>
             <p>
               <span className="font-semibold">Parent/Guardian Goals:</span>{" "}
-              {child.admissionGoal.parentGuardianGoals}
+              {child.extraDetails.admissionGoal.parentGuardianGoals}
             </p>
             <p>
               <span className="font-semibold">
                 Preferred Therapy Modalities:
               </span>{" "}
-              {child.admissionGoal.preferredTherapyModalities.join(", ")}
+              {child.extraDetails.admissionGoal.preferredTherapyModalities.join(", ")}
             </p>
             <p>
               <span className="font-semibold">Reason for Admission:</span>{" "}
-              {child.admissionGoal.reasonForAdmission}
+              {child.extraDetails.admissionGoal.reasonForAdmission}
             </p>
             <p>
               <span className="font-semibold">Sensory Integration Goal:</span>{" "}
-              {child.admissionGoal.sensoryIntegrationGoal}
+              {child.extraDetails.admissionGoal.sensoryIntegrationGoal}
             </p>
             <p>
               <span className="font-semibold">Social Skills Goal:</span>{" "}
-              {child.admissionGoal.socialSkillsGoal}
+              {child.extraDetails.admissionGoal.socialSkillsGoal}
             </p>
           </div>
         </div>
@@ -537,13 +462,13 @@ const ChildView = () => {
               </tr>
             </thead>
             <tbody>
-              {child.selectedServices.map((service, index) => (
+              {/* {child.selectedServices.map((service, index) => (
                 <tr key={index} className="border-t">
                   <td className="px-4 py-2">{service.serviceName}</td>
                   <td className="px-4 py-2">{service.startDate}</td>
                   <td className="px-4 py-2">{service.status}</td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>
