@@ -81,8 +81,8 @@ const ManageProviders = () => {
     }
   };
   return (
-    <div className="p-6 ml-6">
-      <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
+    <div className="p-6 ml-20">
+      <div className="p-2 bg-gray-100 max-w-screen max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Manage Providers</h1>
           <button
@@ -92,7 +92,7 @@ const ManageProviders = () => {
             Add Provider
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mr-10">
           {providers.length === 0 ? (
             <div className="col-span-full text-center py-4 text-gray-500">
               No Providers found!

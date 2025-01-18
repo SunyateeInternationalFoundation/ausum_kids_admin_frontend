@@ -105,7 +105,7 @@ const ProvidersView = () => {
   if (!provider) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container ml-20 p-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* Provider Details Card */}
         <div className="col-span-3 bg-white rounded-lg border shadow-sm overflow-hidden">

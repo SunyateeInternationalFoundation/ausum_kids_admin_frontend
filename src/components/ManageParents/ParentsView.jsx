@@ -1,14 +1,14 @@
 import axios from "axios";
 import { Calendar, Check, IndianRupee, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 const ParentsView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [parent, setParent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedParent, setEditedParent] = useState({});
-
+  const [children, setChildren] = useState([]);
   async function approveParent(updateId) {
     console.log("updatedId", updateId);
     try {
@@ -50,7 +50,7 @@ const ParentsView = () => {
           `${import.meta.env.VITE_WEBSITE}/manage-parents/${id}`
         );
         setParent(response.data.data);
-
+        setChildren(response.data.child);
         setEditedParent(response.data.data || {});
       } catch (error) {
         console.error("Error fetching parent details:", error);
@@ -65,7 +65,7 @@ const ParentsView = () => {
   };
   console.log("parent>>>>", parent);
   return (
-    <div className="container mx-auto p-6 space-y-6 ml-6">
+    <div className="container mx-auto p-6 space-y-6 ml-20">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
           <div className="px-6 py-4 flex items-center justify-between">
@@ -168,31 +168,40 @@ const ParentsView = () => {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {parent?.children?.map((child) => (
-                <div
-                  key={child.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-pink-50 border border-pink-200 shadow-sm"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center">
-                      <span className="text-lg font-medium">
-                        {child.name.charAt(0)}
-                      </span>
+              {children.length > 0 ? (
+                children.map((child) => (
+                  <div
+                    key={child.id}
+                    className="flex items-center justify-between p-4 rounded-lg bg-pink-50 border border-pink-200 shadow-sm"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center">
+                        <span className="text-lg font-medium">
+                          {child?.basicInfo?.childFullName.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium">
+                          {child?.basicInfo?.childFullName}
+                        </p>
+                        {/* <p className="text-sm text-gray-500">
+                          Service: {child?.selectedService}
+                        </p> */}
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium">
-                        {child?.basicInfo?.childFullName}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Service: {child?.selectedService}
-                      </p>
-                    </div>
+                    <button
+                      className="px-3 py-1.5 rounded-md text-sm font-medium text-white bg-[#db2777]"
+                      onClick={() => {
+                        navigate(`/manage-child/${child._id}`);
+                      }}
+                    >
+                      View Details
+                    </button>
                   </div>
-                  <button className="px-3 py-1.5 rounded-md text-sm font-medium text-white bg-[#db2777]">
-                    View Details
-                  </button>
-                </div>
-              )) ?? <p>No children available.</p>}
+                ))
+              ) : (
+                <p>No children available.</p>
+              )}
             </div>
           </div>
         </div>

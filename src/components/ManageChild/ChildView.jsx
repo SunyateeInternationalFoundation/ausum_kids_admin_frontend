@@ -26,12 +26,16 @@ const ChildView = () => {
     };
     fetchChildDetails();
   }, []);
-  
+
   async function approveChild(id) {
     try {
-      await axios.post(`${import.meta.env.VITE_WEBSITE}/manage-child/${id}`);
-      setChild((prev) => ({ ...prev, verified: true }));
-      alert("Child verified successfully!");
+      const response = await axios.patch(
+        `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`
+      );
+      if (response.data.success) {
+        setChild((prev) => ({ ...prev, verified: true }));
+        alert("Child verified successfully!");
+      }
     } catch (error) {
       console.error("Error verifying child:", error);
     }
@@ -42,7 +46,7 @@ const ChildView = () => {
   // };
 
   const handleCancel = () => {
-    setEditMode(false);
+    setIsEditing(false);
     setEditedChild(child);
   };
 
@@ -68,34 +72,56 @@ const ChildView = () => {
       [name]: value,
     }));
   };
-  const handleVerify = () => {
-    setChild((prev) => ({ ...prev, verified: true }));
-  };
 
-  const handleEdit = () => {
-    setEditMode(true);
-    setEditSection(section);
-  };
+  // const handleEdit = () => {
+  //   setEditMode(true);
+  //   setEditSection(section);
+  // };
+  // const handleEditChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setEditedChild((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+  // const handleSave = () => {
+  //   setEditMode(false);
+  //   setEditSection("");
+  // };
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditedChild((prev) => ({
       ...prev,
-      [name]: value,
+      basicInfo: {
+        ...prev.basicInfo,
+        [name]: value,
+      },
     }));
   };
-  const handleSave = () => {
-    setEditMode(false);
-    setEditSection("");
+
+  const handleSave = async () => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`,
+        editedChild
+      );
+      setChild(response.data.data);
+      setIsEditing(false);
+      alert("Child details updated successfully!");
+    } catch (error) {
+      console.error("Error updating child details:", error);
+      alert("Failed to update child details. Please try again.");
+    }
   };
   if (!child) return <div>Loading...</div>;
-
+  console.log("child", child);
   return (
-    <div className="container mx-auto p-4 ml-8 overflow-y-auto">
+    <div className="container mx-auto p-4 ml-20 overflow-y-auto">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* First Row - First Column */}
         <div className="col-span-3 bg-white rounded-lg border shadow-sm overflow-hidden">
           <div className="px-6 py-4 flex items-center justify-between">
-            <h2 className="text-xl font-bold">child Details</h2>
+            <h2 className="text-xl font-bold">Child Details</h2>
             <div className="flex gap-2">
               {!child.verified && (
                 <button
@@ -108,7 +134,7 @@ const ChildView = () => {
               )}
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="inline-flex items-center px-3 py-1.5  rounded-md text-sm font-medium text-white bg-[#db2777]"
+                className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium text-white bg-[#db2777]"
               >
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
@@ -116,61 +142,82 @@ const ChildView = () => {
             </div>
           </div>
           <div className="w-3/4 grid grid-cols-1 md:grid-cols-2 gap-6 ml-10">
-            {editMode ? (
+            {isEditing ? (
               <>
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
-                  name="name"
-                  value={editedChild?.basicInfo?.childFullName}
+                  name="childFullName"
+                  value={editedChild?.basicInfo?.childFullName || ""}
                   onChange={handleChange}
                   placeholder="Child Name"
                 />
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child?.basicInfo?.parentGuardianName}
+                  <strong>Parent's Name:</strong>{" "}
+                  {editedChild?.basicInfo?.parentGuardianName || "N/A"}
                 </p>
-                <p className="text-gray-600">
-                  <strong>Address:</strong> {child?.basicInfo?.address || "Hyderabad"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child?.basicInfo?.email}
-                </p>
-                <p className="text-gray-600">
-                  <strong>City:</strong> {child?.parent?.city || "Hyderbad"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child?.basicInfo?.phoneNumber}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child?.parent?.pincode || "500012"}
-                </p>
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="address"
+                  value={editedChild?.basicInfo?.address || "Hyderabad"}
+                  onChange={handleChange}
+                  placeholder="Address"
+                />
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="email"
+                  value={editedChild?.basicInfo?.email || ""}
+                  onChange={handleChange}
+                  placeholder="Parent's Email"
+                />
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="city"
+                  value={editedChild?.parent?.city || "Hyderabad"}
+                  onChange={handleChange}
+                  placeholder="City"
+                />
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="phoneNumber"
+                  value={editedChild?.basicInfo?.phoneNumber || ""}
+                  onChange={handleChange}
+                  placeholder="Parent's Phone"
+                />
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="pincode"
+                  value={editedChild?.parent?.pincode || "500012"}
+                  onChange={handleChange}
+                  placeholder="Pincode"
+                />
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
                 </p>
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="selectedService"
-                  value={editedChild.selectedService}
+                  value={editedChild?.selectedService || ""}
                   onChange={handleChange}
                   placeholder="Selected Service"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="selectedDate"
-                  value={editedChild?.selectedDate}
+                  value={editedChild?.selectedDate || ""}
                   onChange={handleChange}
                   placeholder="Selected Date"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="selectedTime"
-                  value={editedChild?.selectedTime}
+                  value={editedChild?.selectedTime || ""}
                   onChange={handleChange}
                   placeholder="Selected Time"
                 />
                 <textarea
                   className="text-gray-600 border rounded px-2 py-1"
                   name="notes"
-                  value={editedChild?.notes}
+                  value={editedChild?.notes || ""}
                   onChange={handleChange}
                   placeholder="Notes"
                 />
@@ -178,45 +225,67 @@ const ChildView = () => {
             ) : (
               <>
                 <p className="text-gray-600">
-                  <strong>Child Name:</strong> {child?.basicInfo?.childFullName}
+                  <strong>Child Name:</strong>{" "}
+                  {child?.basicInfo?.childFullName || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong> {child?.basicInfo?.name}
+                  <strong>Parent's Name:</strong>{" "}
+                  {child?.basicInfo?.parentGuardianName || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Address:</strong> {child?.basicInfo?.address}
+                  <strong>Address:</strong> {child?.basicInfo?.address || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong> {child?.basicInfo?.email}
+                  <strong>Parent's Email:</strong>{" "}
+                  {child?.basicInfo?.email || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child?.basicInfo?.city || "Hyderabad"}
+                  <strong>City:</strong> {child?.parent?.city || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong> {child?.basicInfo?.phoneNumber}
+                  <strong>Parent's Phone:</strong>{" "}
+                  {child?.basicInfo?.phoneNumber || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child?.parent?.pincode || "City"}
+                  <strong>Pincode:</strong> {child?.parent?.pincode || "N/A"}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Service:</strong> {child?.selectedService || "Speech therapy"}
+                  <strong>Selected Service:</strong>{" "}
+                  {child?.selectedService || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Date:</strong> {child?.selectedDate}
+                  <strong>Selected Date:</strong> {child?.selectedDate || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Selected Time:</strong> {child?.selectedTime}
+                  <strong>Selected Time:</strong> {child?.selectedTime || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Notes:</strong> {child?.notes}
+                  <strong>Notes:</strong> {child?.notes || "N/A"}
                 </p>
               </>
             )}
           </div>
+          {isEditing && (
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleSave}
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mr-2"
+              >
+                Save
+              </button>
+              <button
+                onClick={handleCancel}
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </div>
+
         {/* <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-700">
@@ -251,7 +320,7 @@ const ChildView = () => {
               <h3 className="text-xl font-bold mb-4">Parent Information</h3>
               <button
                 onClick={() =>
-                  (window.location.href = `/parent/${child.parent.id}`)
+                  (window.location.href = `/manage-parents/${child.parentId}`)
                 }
                 className="inline-flex items-center px-3 py-1.5 bg-[#0d9488] text-white rounded-md text-sm font-medium"
               >
@@ -261,7 +330,8 @@ const ChildView = () => {
 
             <div className="space-y-3">
               <p>
-                <span className="font-semibold">Name:</span> {child?.basicInfo?.parentGuardianName}
+                <span className="font-semibold">Name:</span>{" "}
+                {child?.basicInfo?.parentGuardianName}
               </p>
               <p>
                 <span className="font-semibold">Phone:</span>{" "}
@@ -383,7 +453,9 @@ const ChildView = () => {
             </p>
             <p>
               <span className="font-semibold">Occupational Therapy:</span>{" "}
-              {child.extraDetails?.therapyHistory?.occupationalTherapy ? "Yes" : "No"}
+              {child.extraDetails?.therapyHistory?.occupationalTherapy
+                ? "Yes"
+                : "No"}
             </p>
             <p>
               <span className="font-semibold">ABA:</span>{" "}
@@ -433,7 +505,9 @@ const ChildView = () => {
               <span className="font-semibold">
                 Preferred Therapy Modalities:
               </span>{" "}
-              {child?.extraDetails?.admissionGoal?.preferredTherapyModalities.join(", ")}
+              {child?.extraDetails?.admissionGoal?.preferredTherapyModalities.join(
+                ", "
+              )}
             </p>
             <p>
               <span className="font-semibold">Reason for Admission:</span>{" "}

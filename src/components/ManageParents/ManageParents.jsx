@@ -73,11 +73,12 @@ const ManageParents = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_WEBSITE}/manage-parents`,
         newParent
       );
-      setParents((prev) => [...prev, newParent]);
+      console.log("response", res);
+      setParents((prev) => [...prev, res.data.data]);
       setShowModal(false);
       setNewParent({
         name: "",
@@ -131,7 +132,7 @@ const ManageParents = () => {
     }
   };
   return (
-    <div className="p-6 ml-6">
+    <div className="p-6 ml-20">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Parents</h1>
         <div className="flex items-center gap-2">
@@ -150,11 +151,11 @@ const ManageParents = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mr-10">
         {parents.map((parent) => (
           <div
             key={parent._id}
-            className="bg-white rounded-lg shadow-md w-full overflow-hidden cursor-pointer"
+            className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer relative"
             onClick={() => {
               console.log("parent.id", parent._id);
 
@@ -192,15 +193,18 @@ const ManageParents = () => {
                   <div className="font-semibold">{parent.email}</div>
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="my-4">
                 <div className="text-sm text-gray-500">Address</div>
                 <div className="font-semibold">
                   {`${parent.address}, ${parent.city}, ${parent.pincode}`}
                 </div>
               </div>
-              <div className="mt-4 flex justify-end ">
+              <div className="absolute bottom-4 right-4">
                 <button
-                  onClick={() => handleDelete(parent._id, parent.name)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(parent._id, parent.name);
+                  }}
                   className="bg-pink-100 w-20 rounded-lg text-pink-800 hover:text-red-700 transition duration-150"
                 >
                   Delete

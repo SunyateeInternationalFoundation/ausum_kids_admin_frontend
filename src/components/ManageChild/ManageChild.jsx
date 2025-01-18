@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ManageChild = () => {
   const navigate = useNavigate();
   const [childrens, setChildrens] = useState([]);
-  const [parents, setParents] = useState([]); 
+  const [parents, setParents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newChild, setNewChild] = useState({
     basicInfo: {
@@ -32,7 +32,7 @@ const ManageChild = () => {
     };
     fetchChildrens();
   }, []);
-  
+
   useEffect(() => {
     const fetchParentDetails = async () => {
       try {
@@ -137,8 +137,8 @@ const ManageChild = () => {
   };
 
   return (
-    <div className="p-6 ml-6">
-      <div className="p-2 bg-gray-100 mt-5 max-w-screen max-h-screen overflow-y-auto">
+    <div className="p-6 ml-20">
+      <div className="p-2 bg-gray-100 max-w-screen max-h-screen overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Manage Childrens</h1>
           <button
@@ -148,7 +148,7 @@ const ManageChild = () => {
             Add Child
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mr-10">
           {childrens.length === 0 ? (
             <div className="col-span-full text-center py-4 text-gray-500">
               No childrens found!
@@ -240,8 +240,8 @@ const ManageChild = () => {
                 <div className="mb-2">
                   <label className="block text-sm font-medium text-gray-700">
                     Child's Diagnosing
-                    </label>
-                    <input
+                  </label>
+                  <input
                     type="text"
                     name="diognose"
                     value={newChild?.diognose}
@@ -249,8 +249,8 @@ const ManageChild = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                     required
                   />
-                 </div>
-                 <div className="mb-2">
+                </div>
+                <div className="mb-2">
                   <label className="block text-sm font-medium text-gray-700">
                     Select Parent
                   </label>

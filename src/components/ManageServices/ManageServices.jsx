@@ -282,7 +282,7 @@ const ManageServices = () => {
   };
 
   return (
-    <div className="p-8 max-w-screen max-h-screen overflow-y-auto ml-6">
+    <div className="p-8 max-w-screen max-h-screen overflow-y-auto ml-20">
       <div className="flex justify-end mb-4">
         <button
           onClick={() => openModal()}
