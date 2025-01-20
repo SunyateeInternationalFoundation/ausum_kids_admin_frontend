@@ -25,7 +25,7 @@ const Sidebar = () => {
   const menuItems = [
     { icon: LayoutDashboard, label: "Manage Parents", path: "/manage-parents" },
     { icon: User, label: "Manage Child Profiles", path: "/manage-child" },
-    { icon: Heart, label: "Manage Services", path: "/manage-services" },
+    { icon: Heart, label: "Manage Therapies", path: "/manage-services" },
     // { icon: Star, label: "Analytics & Reports", path: "/analytics-reports" },
     { icon: Calendar, label: "Manage Providers", path: "/manage-providers" },
   ];

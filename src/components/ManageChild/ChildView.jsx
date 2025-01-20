@@ -6,9 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const ChildView = () => {
   const { id } = useParams();
   const [child, setChild] = useState(null);
-  const [editMode, setEditMode] = useState(false);
   const [editedChild, setEditedChild] = useState(null);
-  const [editSection, setEditSection] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
@@ -41,53 +39,11 @@ const ChildView = () => {
     }
   }
 
-  // const handleEdit = () => {
-  //   setEditMode(true);
-  // };
-
   const handleCancel = () => {
     setIsEditing(false);
     setEditedChild(child);
   };
 
-  // const handleSave = async () => {
-  //   try {
-  //     const response = await axios.put(
-  //       `${import.meta.env.VITE_WEBSITE}/manage-child/${id}`,
-  //       editedChild
-  //     );
-  //     setChild(response.data.data);
-  //     setEditMode(false);
-  //     alert("Child details updated successfully!");
-  //   } catch (error) {
-  //     console.error("Error updating child details:", error);
-  //     alert("Failed to update child details. Please try again.");
-  //   }
-  // };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedChild((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // const handleEdit = () => {
-  //   setEditMode(true);
-  //   setEditSection(section);
-  // };
-  // const handleEditChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setEditedChild((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-  // const handleSave = () => {
-  //   setEditMode(false);
-  //   setEditSection("");
-  // };
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditedChild((prev) => ({
@@ -118,7 +74,6 @@ const ChildView = () => {
   return (
     <div className="container mx-auto p-4 ml-20 overflow-y-auto">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-        {/* First Row - First Column */}
         <div className="col-span-3 bg-white rounded-lg border shadow-sm overflow-hidden">
           <div className="px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-bold">Child Details</h2>
@@ -148,79 +103,54 @@ const ChildView = () => {
                   className="text-gray-600 border rounded px-2 py-1"
                   name="childFullName"
                   value={editedChild?.basicInfo?.childFullName || ""}
-                  onChange={handleChange}
+                  onChange={handleEditChange}
                   placeholder="Child Name"
                 />
-                <p className="text-gray-600">
-                  <strong>Parent's Name:</strong>{" "}
-                  {editedChild?.basicInfo?.parentGuardianName || "N/A"}
-                </p>
+                <input
+                  className="text-gray-600 border rounded px-2 py-1"
+                  name="parentGuardianName"
+                  value={editedChild?.basicInfo?.parentGuardianName || ""}
+                  onChange={handleEditChange}
+                  placeholder="Parent/Guardian Name"
+                />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="address"
-                  value={editedChild?.basicInfo?.address || "Hyderabad"}
-                  onChange={handleChange}
+                  value={editedChild?.basicInfo?.address || ""}
+                  onChange={handleEditChange}
                   placeholder="Address"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="email"
                   value={editedChild?.basicInfo?.email || ""}
-                  onChange={handleChange}
+                  onChange={handleEditChange}
                   placeholder="Parent's Email"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
-                  name="city"
-                  value={editedChild?.parent?.city || "Hyderabad"}
-                  onChange={handleChange}
-                  placeholder="City"
+                  name="dateOfBirth"
+                  value={editedChild?.basicInfo?.dateOfBirth || ""}
+                  onChange={handleEditChange}
+                  placeholder="Date Of Birth"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
                   name="phoneNumber"
                   value={editedChild?.basicInfo?.phoneNumber || ""}
-                  onChange={handleChange}
-                  placeholder="Parent's Phone"
+                  onChange={handleEditChange}
+                  placeholder="Phone Number"
                 />
                 <input
                   className="text-gray-600 border rounded px-2 py-1"
-                  name="pincode"
-                  value={editedChild?.parent?.pincode || "500012"}
-                  onChange={handleChange}
-                  placeholder="Pincode"
+                  name="gender"
+                  value={editedChild?.basicInfo?.gender || ""}
+                  onChange={handleEditChange}
+                  placeholder="Gender"
                 />
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
                 </p>
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="selectedService"
-                  value={editedChild?.selectedService || ""}
-                  onChange={handleChange}
-                  placeholder="Selected Service"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="selectedDate"
-                  value={editedChild?.selectedDate || ""}
-                  onChange={handleChange}
-                  placeholder="Selected Date"
-                />
-                <input
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="selectedTime"
-                  value={editedChild?.selectedTime || ""}
-                  onChange={handleChange}
-                  placeholder="Selected Time"
-                />
-                <textarea
-                  className="text-gray-600 border rounded px-2 py-1"
-                  name="notes"
-                  value={editedChild?.notes || ""}
-                  onChange={handleChange}
-                  placeholder="Notes"
-                />
               </>
             ) : (
               <>
@@ -229,41 +159,28 @@ const ChildView = () => {
                   {child?.basicInfo?.childFullName || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Name:</strong>{" "}
+                  <strong>Parent/Guardian Name:</strong>{" "}
                   {child?.basicInfo?.parentGuardianName || "N/A"}
                 </p>
                 <p className="text-gray-600">
                   <strong>Address:</strong> {child?.basicInfo?.address || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Email:</strong>{" "}
-                  {child?.basicInfo?.email || "N/A"}
+                  <strong>Email:</strong> {child?.basicInfo?.email || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>City:</strong> {child?.parent?.city || "N/A"}
+                  <strong>Date Of Birth:</strong>{" "}
+                  {child?.basicInfo?.dateOfBirth || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Parent's Phone:</strong>{" "}
+                  <strong>Phone Number:</strong>{" "}
                   {child?.basicInfo?.phoneNumber || "N/A"}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Pincode:</strong> {child?.parent?.pincode || "N/A"}
+                  <strong>Gender:</strong> {child?.basicInfo?.gender || "N/A"}
                 </p>
                 <p className="text-gray-600">
                   <strong>Verified:</strong> {child.verified ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Selected Service:</strong>{" "}
-                  {child?.selectedService || "N/A"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Selected Date:</strong> {child?.selectedDate || "N/A"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Selected Time:</strong> {child?.selectedTime || "N/A"}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Notes:</strong> {child?.notes || "N/A"}
                 </p>
               </>
             )}
@@ -285,35 +202,6 @@ const ChildView = () => {
             </div>
           )}
         </div>
-
-        {/* <div className="mt-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Session Details -{" "}
-              <span className="text-gray-500 font-bold">
-                {child?.selectedService}
-              </span>
-            </h2>
-            {editMode && (
-              <div>
-                <button
-                  // onClick={handleUpdate}
-                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mr-2"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
-          </div>
-        </div> */}
-
-        {/* First Row - Second Column */}
         <div className="col-span-2">
           <div className="bg-white rounded-lg border shadow-sm p-4">
             <div className="flex items-center justify-between">
@@ -398,8 +286,18 @@ const ChildView = () => {
               {child?.extraDetails?.medicalInfo?.medications}
             </p>
             <p>
-              <span className="font-semibold">Additional Notes:</span>{" "}
-              {child?.extraDetails?.medicalInfo?.additionalNotes || "NA"}
+              <span className="font-semibold">
+                Primary Healthcare Provider Name:
+              </span>{" "}
+              {child?.extraDetails?.medicalInfo
+                ?.primaryHealthcareProviderName || "NA"}
+            </p>
+            <p>
+              <span className="font-semibold">
+                Primary Healthcare Provider Contact:
+              </span>{" "}
+              {child?.extraDetails?.medicalInfo
+                ?.primaryHealthcareProviderContact || "NA"}
             </p>
           </div>
         </div>
@@ -432,12 +330,26 @@ const ChildView = () => {
               <span className="font-semibold">Sensory Details:</span>{" "}
               {child.extraDetails?.behavioralInfo?.sensoryDetails}
             </p>
+            <p>
+              <span className="font-semibold">Repetitive Behaviors:</span>{" "}
+              {child.extraDetails?.behavioralInfo?.calmingStrategies}
+            </p>
+            <p>
+              <span className="font-semibold">Triggers for Meltdowns:</span>{" "}
+              {child.extraDetails?.behavioralInfo?.meltdownTriggers}
+            </p>
+            <p>
+              <span className="font-semibold">Strategies that Help Calm:</span>{" "}
+              {child.extraDetails?.behavioralInfo?.repetitiveBehaviors}
+            </p>
           </div>
         </div>
 
         {/* Therapy History */}
         <div className="bg-white rounded-lg border shadow-sm p-6">
-          <h3 className="text-xl font-bold mb-4">Therapy History</h3>
+          <h3 className="text-xl font-bold mb-4">
+            Education and Therapy History
+          </h3>
           <div className="space-y-2">
             <p>
               <span className="font-semibold">School Name:</span>{" "}
@@ -465,6 +377,20 @@ const ChildView = () => {
               <span className="font-semibold">Additional Therapies:</span>{" "}
               {child.extraDetails?.therapyHistory?.additionalTherapies}
             </p>
+            <p>
+              <span className="font-semibold">
+                Goals Achieved Through Therapy:
+              </span>{" "}
+              {child.extraDetails?.therapyHistory?.challengesObserved}
+            </p>
+            <p>
+              <span className="font-semibold">Challenges Observed:</span>{" "}
+              {child.extraDetails?.therapyHistory?.goalsAchieved}
+            </p>
+            <p>
+              <span className="font-semibold">Strengths and Interests:</span>{" "}
+              {child.extraDetails?.therapyHistory?.strengthsAndInterests}
+            </p>
           </div>
         </div>
       </div>
@@ -475,6 +401,14 @@ const ChildView = () => {
         <div className="bg-white rounded-lg border shadow-sm p-6">
           <h3 className="text-xl font-bold mb-4">Admission Goals</h3>
           <div className="space-y-2">
+            <p>
+              <span className="font-semibold">Reason for Admission:</span>{" "}
+              {child?.extraDetails?.admissionGoal?.reasonForAdmission}
+            </p>
+            <p>
+              <span className="font-semibold">Parent/Guardian Goals:</span>{" "}
+              {child?.extraDetails?.admissionGoal?.parentGuardianGoals}
+            </p>
             <p>
               <span className="font-semibold">Academic Support Goal:</span>{" "}
               {child?.extraDetails?.admissionGoal?.academicSupportGoal}
@@ -488,30 +422,12 @@ const ChildView = () => {
               {child?.extraDetails?.admissionGoal?.communicationGoal}
             </p>
             <p>
-              <span className="font-semibold">Emergency Contact:</span>{" "}
-              {child?.extraDetails?.admissionGoal?.emergencyContactName}
-            </p>
-            <p>
-              <span className="font-semibold">
-                Emergency Contact Relationship:
-              </span>{" "}
-              {child?.extraDetails?.admissionGoal?.emergencyContactRelationship}
-            </p>
-            <p>
-              <span className="font-semibold">Parent/Guardian Goals:</span>{" "}
-              {child?.extraDetails?.admissionGoal?.parentGuardianGoals}
-            </p>
-            <p>
               <span className="font-semibold">
                 Preferred Therapy Modalities:
               </span>{" "}
               {child?.extraDetails?.admissionGoal?.preferredTherapyModalities.join(
                 ", "
               )}
-            </p>
-            <p>
-              <span className="font-semibold">Reason for Admission:</span>{" "}
-              {child?.extraDetails?.admissionGoal?.reasonForAdmission}
             </p>
             <p>
               <span className="font-semibold">Sensory Integration Goal:</span>{" "}

@@ -306,7 +306,7 @@ const ProvidersView = () => {
                     Child Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Service
+                    Therapy
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Sessions
@@ -385,7 +385,7 @@ const ProvidersView = () => {
               <p className="text-sm text-gray-600">{provider.bio}</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Services</h4>
+              <h4 className="font-semibold mb-2">Therapies</h4>
               <div className="flex flex-wrap gap-2">
                 {provider.services.map((service) => (
                   <span
